@@ -50,9 +50,9 @@
 			this.utils.loadJSON('map.json', (data: any) => {
 
 
-				data = ['http://localhost:8000/tileOne.png', 
-						'http://localhost:8000/tileTwo.png',
-						'http://localhost:8000/faucon.png']
+				data = ['assets/imgs/tileOne.png', 
+						'assets/imgs/tileTwo.png',
+						'assets/imgs/faucon.png']
 
 				var imagePtr: any = null;
 				for(var i = 0; i < data.length; i++) {
@@ -66,11 +66,10 @@
 				this.entities = [];
 				this.context = ( document.getElementById("viewport") as any).getContext("2d");
 			});
-			
-	
 		}
 
 		draw() {
+			//console.log('draw');
 			this.context.clearRect(0, 0, this.gameWidth, this.gameHeight);
 			let index = 0;
 			for (let i = 0; i < 6; i++) {

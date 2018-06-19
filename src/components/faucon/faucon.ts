@@ -4,6 +4,8 @@ import { AfterViewInit }  from '@angular/core';
 import { NavController }  from 'ionic-angular';
 
 import * as debug         from 'debug';
+import { TileEngine }     from './tileEngine';
+
 
 
 const log = debug('faucon');
@@ -23,8 +25,7 @@ export class Faucon implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-
+    let engine = new TileEngine();
+    engine.render();
   }
-
-
 }

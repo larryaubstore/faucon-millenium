@@ -25,16 +25,22 @@
 
 		utils: Utils;
 
-		constructor(fps: number, horizontalIndex: number) {
+		constructor(fps: number, 
+                horizontalIndex: number, 
+                containerWidth: number, 
+                containerHeight: number) {
 			this.fps = fps;
 			this.horizontalIndex = horizontalIndex;
 			this.utils = new Utils();
 
-			this.tileWidth = 180 / 2;
-			this.tileHeight = 192 / 2;
+			// this.tileWidth = 180 / 2;
+			// this.tileHeight = 192 / 2;
 
-			this.gameWidth = 1080;
-			this.gameHeight = 1920;
+			this.tileWidth = 82;
+			this.tileHeight = 87;
+
+			this.gameWidth = containerWidth;
+			this.gameHeight = containerHeight;
 
 			this.offsetY = 0;
 			
@@ -70,9 +76,14 @@
 
 		draw() {
 			//console.log('draw');
+
+
+			log('tileWidth  ==> ' + this.tileWidth);
+			log('tileHeight ==> ' + this.tileHeight);
+
 			this.context.clearRect(0, 0, this.gameWidth, this.gameHeight);
 			let index = 0;
-			for (let i = 0; i < 6; i++) {
+			for (let i = 0; i < 5; i++) {
 				for (let j = -10; j < 10; j++) {
 					if ( (i + j) % 2 === 0 ) {
 						index = 0;

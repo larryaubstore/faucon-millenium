@@ -9,8 +9,8 @@ export class EventLoop {
 	game: Game = null;
 
 
-	constructor() {
-		this.game = new Game(30, 0);
+	constructor(containerWidth: number, containerHeight: number) {
+		this.game = new Game(30, 0, containerWidth, containerHeight);
 
 	}
 

@@ -6,8 +6,8 @@ export class TileEngine {
 
     eventLoop: EventLoop = null;
 
-    constructor() {
-        this.eventLoop = new EventLoop();
+    constructor(containerWidth: number, containerHeight: number) {
+        this.eventLoop = new EventLoop(containerWidth, containerHeight);
         this.eventLoop.initialize();
     }
 

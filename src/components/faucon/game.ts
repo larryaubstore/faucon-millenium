@@ -1,5 +1,6 @@
 	import { Utils }					from './utils';
 	import * as debug					from 'debug';
+  import * as async         from 'async';
 
 	
 	
@@ -58,7 +59,9 @@
 
 				data = ['assets/imgs/tileOne.png', 
 						'assets/imgs/tileTwo.png',
-						'assets/imgs/faucon.png']
+						'assets/imgs/faucon.png',
+						'assets/imgs/picking_green.png'
+        ];
 
 				var imagePtr: any = null;
 				for(var i = 0; i < data.length; i++) {
@@ -75,42 +78,66 @@
 		}
 
 		draw() {
-			//console.log('draw');
 
 
 			log('tileWidth  ==> ' + this.tileWidth);
 			log('tileHeight ==> ' + this.tileHeight);
 
-			this.context.clearRect(0, 0, this.gameWidth, this.gameHeight);
-			let index = 0;
-			for (let i = 0; i < 5; i++) {
-				for (let j = -10; j < 10; j++) {
-					if ( (i + j) % 2 === 0 ) {
-						index = 0;
-					} else {
-						index = 1;
-					}
-					this.context.drawImage(this.imageList[index], this.tileWidth * i, this.tileHeight * j +  this.offsetY, this.tileWidth, this.tileHeight);
-				}
-			}
+      async.waterfall([
+        
+        function (cb) {
 
-			this.offsetY = (this.offsetY + 1)
-			
-			if (this.offsetY > this.gameHeight) {
-				this.offsetY = 0;
-			}
+          this.context.clearRect(0, 0, this.gameWidth, this.gameHeight);
+          let index = 0;
+          for (let i = 0; i < 5; i++) {
+            for (let j = -10; j < 10; j++) {
+              if ( (i + j) % 2 === 0 ) {
+                index = 0;
+              } else {
+                index = 1;
+              }
+              this.context.drawImage(this.imageList[index], 
+                                     this.tileWidth * i, 
+                                     this.tileHeight * j +  this.offsetY, 
+                                     this.tileWidth, 
+                                     this.tileHeight);
 
-			this.context.drawImage(this.imageList[2], this.tileWidth * this.horizontalIndex, this.tileHeight * this.verticalIndex, this.tileWidth, this.tileHeight);
-	
-			//document.getElementById('debug').innerHTML = imageList[this.imageCounter].src;
-			//this.context.drawImage(this.imageList[0], 0, 0, this.tileWidth, this.tileHeight);
-			//this.context.drawImage(this.imageList[1], this.tileWidth, 0, this.tileWidth, this.tileHeight);
-			
+            }
+          }
+          cb(null);
+        }.bind(this), 
+
+        function(cb) {
+          this.offsetY = (this.offsetY + 1)
+          
+          if (this.offsetY > this.gameHeight) {
+            this.offsetY = 0;
+          }
+
+          
+
+          this.context.drawImage(this.imageList[2], 
+                                 this.tileWidth * this.horizontalIndex, 
+                                 this.tileHeight * this.verticalIndex, 
+                                 this.tileWidth, 
+                                 this.tileHeight);
+
+          this.context.drawImage(this.imageList[3], 
+                               this.tileWidth * this.horizontalIndex, 
+                               this.tileHeight * this.verticalIndex + 1, 
+                               this.tileWidth, 
+                               this.tileHeight);
+          cb(null);
+        }.bind(this)
+        ], (err: any) => {
+
+
+        });
+
 
 		}
 
-	
-	  	up() {
+	  up() {
 			console.log('UP');
 			this.verticalIndex = this.verticalIndex - 1;
 			if (this.verticalIndex < 0) {

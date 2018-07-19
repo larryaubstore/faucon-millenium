@@ -10,6 +10,7 @@ export class EventLoop {
 
 
 	constructor(containerWidth: number, containerHeight: number) {
+    log('eventLoop');
 		this.game = new Game(30, 0, containerWidth, containerHeight);
 
 	}
@@ -23,14 +24,12 @@ export class EventLoop {
 	}
 
 	run() {
-		var loops = 0, skipTicks = 1000 / this.game.fps;
+		let skipTicks = 1000 / this.game.fps;
 
 
 
 
 		this.game.draw();
-		//this.game.up();
-
 		setTimeout(() => {
 			this.run();
 		}, skipTicks);
@@ -38,6 +37,19 @@ export class EventLoop {
 		
 
 	}
+
+
+  handleStart(evt: any) {
+    evt.preventDefault();
+    var touches = evt.changedTouches;
+    
+    if (touches.length > 1) {
+      //let xTouch = touches[0].pageX;
+      //let yTouch = touches[0].pageY;
+    }
+
+          
+  }
 
 	checkKey(e: any) {
 		e = e || window.event;

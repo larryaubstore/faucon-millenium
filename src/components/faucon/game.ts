@@ -44,6 +44,9 @@
 			this.gameHeight = containerHeight;
 
 			this.offsetY = 0;
+
+      this.moduloTile = 0;
+      this.moduloRange = 12;
 			
 		}
 
@@ -84,13 +87,14 @@
 			log('tileHeight ==> ' + this.tileHeight);
 
       async.waterfall([
-        
-        function (cb) {
+       
+         
+        function drawBoard(cb) {
 
           this.context.clearRect(0, 0, this.gameWidth, this.gameHeight);
           let index = 0;
           for (let i = 0; i < 5; i++) {
-            for (let j = -10; j < 10; j++) {
+            for (let j = -1; j < 11; j++) {
               if ( (i + j) % 2 === 0 ) {
                 index = 0;
               } else {
@@ -98,21 +102,34 @@
               }
               this.context.drawImage(this.imageList[index], 
                                      this.tileWidth * i, 
-                                     this.tileHeight * j +  this.offsetY, 
+                                     this.tileHeight *   ( ( (j + this.moduloTile ) % this.moduloRange) - 1 )  +  this.offsetY, 
                                      this.tileWidth, 
                                      this.tileHeight);
 
             }
           }
           cb(null);
+        }.bind(this),
+
+        function checkLimitOneLine(cb) {
+
+          cb(null);
         }.bind(this), 
 
-        function(cb) {
+        function (cb) {
           this.offsetY = (this.offsetY + 1)
           
-          if (this.offsetY > this.gameHeight) {
+          if (this.offsetY > this.tileHeight) {
             this.offsetY = 0;
+            this.moduloTile = (this.moduloTile + 1 ) % this.moduloRange;
           }
+
+          cb(null);
+
+        }.bind(this), 
+
+
+        function drawFaucon(cb) {
 
           
 

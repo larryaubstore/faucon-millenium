@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 
-import { AboutPage }      from '../about/about';
-import { ContactPage }    from '../contact/contact';
 import { HomePage }       from '../home/home';
 import { Faucon }         from '../../components/faucon/faucon';
 
@@ -10,9 +8,8 @@ import { Faucon }         from '../../components/faucon/faucon';
 })
 export class TabsPage {
 
-  tab1Root = HomePage;
-  tab2Root = Faucon;
-  tab3Root = ContactPage;
+  tab1Root = Faucon;
+  tab2Root = HomePage;
 
   constructor() {
 

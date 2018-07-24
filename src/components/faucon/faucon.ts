@@ -25,25 +25,25 @@ export class Faucon implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-
-
     log('ngAfterViewInit');
 
     let windowWidth: number = window.innerWidth;        // 1080
     let windowHeight: number = window.innerHeight - 78; // 1920
 
+    var canvas: any = document.getElementById('viewport');
+
+    if (windowWidth >= 540) {
+      canvas.width  = 540;
+      canvas.height = 1920;
+    } else {
+      canvas.width  = windowWidth;
+      canvas.height = windowHeight;
+    }
+
     //412 / 669 + 78
 
     log('width ==> ' + windowWidth);
     log('height => ' + windowHeight);
-
-
-    //alert(windowWidth);
-    //alert(windowHeight);
-    
-
-    
-
 
     let engine = new TileEngine(windowWidth, windowHeight);
     engine.render();

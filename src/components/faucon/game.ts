@@ -22,6 +22,9 @@
 
 		offsetY = 0;
 
+    moduloTile = 0;
+    moduloRange = 0;
+
 		imageList: any = [];
 
 		utils: Utils;
@@ -46,7 +49,7 @@
 			this.offsetY = 0;
 
       this.moduloTile = 0;
-      this.moduloRange = 12;
+      this.moduloRange = 13;
 			
 		}
 
@@ -94,7 +97,7 @@
           this.context.clearRect(0, 0, this.gameWidth, this.gameHeight);
           let index = 0;
           for (let i = 0; i < 5; i++) {
-            for (let j = -1; j < 11; j++) {
+            for (let j = -1; j < (this.moduloRange + 1); j++) {
               if ( (i + j) % 2 === 0 ) {
                 index = 0;
               } else {

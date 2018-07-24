@@ -1,9 +1,30 @@
 faucon {
 
+  #TileEngine {
+
+  }
+
+  #viewport {
+
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 1080px;
+  }
+
+  body {
+    background-color: black;
+  }
+
 }
 
 
 ion-app.md  .scroll-content {
+  padding: 0px !important;
+}
 
-    padding: 0px !important;
+.content-md {
+  background-color: black !important;
 }

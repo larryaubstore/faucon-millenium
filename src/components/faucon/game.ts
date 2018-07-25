@@ -27,6 +27,8 @@
 
 		imageList: any = [];
 
+    imageListNumber: any = [];
+
 		utils: Utils;
 
 		constructor(fps: number, 
@@ -49,7 +51,7 @@
 			this.offsetY = 0;
 
       this.moduloTile = 0;
-      this.moduloRange = 13;
+      this.moduloRange = 6;
 			
 		}
 
@@ -69,6 +71,21 @@
 						'assets/imgs/picking_green.png'
         ];
 
+        let dataNumber: [string] = [] as any;
+
+
+        dataNumber = [
+          'assets/imgs/number0.png',
+          'assets/imgs/number1.png',
+          'assets/imgs/number2.png',
+          'assets/imgs/number3.png',
+          'assets/imgs/number4.png',
+          'assets/imgs/number5.png',
+          'assets/imgs/number6.png',
+          'assets/imgs/number7.png',
+          'assets/imgs/number8.png',
+          'assets/imgs/number9.png'];
+
 				var imagePtr: any = null;
 				for(var i = 0; i < data.length; i++) {
 					imagePtr = new Image();
@@ -76,6 +93,13 @@
 					imagePtr.src = data[i];
 					this.imageList.push(imagePtr);
 				}
+
+        for (var i = 0; i < dataNumber.length; i++) {
+					imagePtr = new Image();
+					imagePtr.onload = this.waitImageLoading;
+					imagePtr.src = dataNumber[i];
+					this.imageListNumber.push(imagePtr);
+        }
 		
 
 				this.entities = [];
@@ -86,8 +110,8 @@
 		draw() {
 
 
-			log('tileWidth  ==> ' + this.tileWidth);
-			log('tileHeight ==> ' + this.tileHeight);
+			// log('tileWidth  ==> ' + this.tileWidth);
+			// log('tileHeight ==> ' + this.tileHeight);
 
       async.waterfall([
        
@@ -96,19 +120,26 @@
 
           this.context.clearRect(0, 0, this.gameWidth, this.gameHeight);
           let index = 0;
+          let realNumber =  0; 
           for (let i = 0; i < 5; i++) {
-            for (let j = -1; j < (this.moduloRange + 1); j++) {
+            for (let j = 0; j < this.moduloRange; j++) {
+              realNumber = ( ( (j + this.moduloTile ) % this.moduloRange) );
               if ( (i + j) % 2 === 0 ) {
                 index = 0;
               } else {
                 index = 1;
               }
+
               this.context.drawImage(this.imageList[index], 
                                      this.tileWidth * i, 
-                                     this.tileHeight *   ( ( (j + this.moduloTile ) % this.moduloRange) - 1 )  +  this.offsetY, 
+                                     this.tileHeight * (realNumber-1)  +  this.offsetY, 
                                      this.tileWidth, 
                                      this.tileHeight);
-
+              this.context.drawImage(this.imageListNumber[realNumber], 
+                                   0, 
+                                   this.tileHeight * (j-1)  +  this.offsetY, 
+                                   this.tileWidth, 
+                                   this.tileHeight);
             }
           }
           cb(null);

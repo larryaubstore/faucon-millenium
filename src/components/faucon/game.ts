@@ -1,6 +1,7 @@
 	import { Utils }					from './utils';
 	import * as debug					from 'debug';
   import * as async         from 'async';
+  import { Tile }           from './models/tile';
 
 	
 	
@@ -30,6 +31,8 @@
     imageListNumber: any = [];
 
 		utils: Utils;
+
+    currentGrid: any = {};
 
 		constructor(fps: number, 
                 horizontalIndex: number, 
@@ -100,10 +103,32 @@
 					imagePtr.src = dataNumber[i];
 					this.imageListNumber.push(imagePtr);
         }
+
+
+				this.context = ( document.getElementById("viewport") as any).getContext("2d");
+				this.entities = [];
+        /*************/
+        let index = 0;
+        let tile: Tile = null;
+        
+        for (let i = 0; i < 5; i++) {
+          for (let j = 0; j < this.moduloRange; j++) {
+            index = i;
+            
+            tile = new Tile(this.imageList[Math.floor(Math.random() * 2)], 
+                            i, 
+                            j, 
+                            this.tileWidth, 
+                            this.tileHeight, 
+                            0, 
+                            this.context); 
+
+            this.currentGrid[i + "-" + j] = tile; 
+          }
+        }
+        /*************/
 		
 
-				this.entities = [];
-				this.context = ( document.getElementById("viewport") as any).getContext("2d");
 			});
 		}
 
@@ -119,27 +144,34 @@
         function drawBoard(cb) {
 
           this.context.clearRect(0, 0, this.gameWidth, this.gameHeight);
-          let index = 0;
-          let realNumber =  0; 
+          let tilePtr = null;
+          let realNumber =  0;
+          let indexGrid: string = null; 
           for (let i = 0; i < 5; i++) {
             for (let j = 0; j < this.moduloRange; j++) {
+              indexGrid = i + "-" + j;
               realNumber = ( ( (j + this.moduloTile ) % this.moduloRange) );
-              if ( (i + j) % 2 === 0 ) {
-                index = 0;
-              } else {
-                index = 1;
-              }
+              // if ( (i + j) % 2 === 0 ) {
+              //   index = 0;
+              // } else {
+              //   index = 1;
+              // }
+              //
+              tilePtr = this.currentGrid[indexGrid].imagePtr;
+              this.currentGrid[indexGrid].setYPos(this.tileHeight * (realNumber-1)  +  this.offsetY);
 
-              this.context.drawImage(this.imageList[index], 
-                                     this.tileWidth * i, 
-                                     this.tileHeight * (realNumber-1)  +  this.offsetY, 
+              this.context.drawImage(tilePtr, 
+                                     this.tileWidth * i,
+                                     //this.currentGrid[indexGrid].xPos, 
+                                     this.currentGrid[indexGrid].yPos, 
                                      this.tileWidth, 
                                      this.tileHeight);
+
               this.context.drawImage(this.imageListNumber[realNumber], 
-                                   0, 
-                                   this.tileHeight * (j-1)  +  this.offsetY, 
-                                   this.tileWidth, 
-                                   this.tileHeight);
+                                     0, 
+                                     this.tileHeight * (j-1)  +  this.offsetY, 
+                                     this.tileWidth, 
+                                     this.tileHeight);
             }
           }
           cb(null);

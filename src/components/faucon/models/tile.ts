@@ -9,6 +9,8 @@ export class Tile {
 
   context: any;
 
+  initialYPos: number;
+
   constructor(imagePtr: any, 
               xPos: number, 
               yPos: number, 
@@ -19,6 +21,7 @@ export class Tile {
     this.imagePtr = imagePtr;
     this.xPos = xPos;
     this.yPos = yPos;
+    this.initialYPos = yPos;
     this.width = width;
     this.height = height;
     this.offset = offset;

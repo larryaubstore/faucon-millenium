@@ -32,6 +32,8 @@
 
 		utils: Utils;
 
+    isPaused = false;
+
     currentGrid: any = {};
 
 		constructor(fps: number, 
@@ -54,9 +56,15 @@
 			this.offsetY = 0;
 
       this.moduloTile = 0;
-      this.moduloRange = 6;
-			
+      // this.moduloRange = 6;
+      this.moduloRange = Math.ceil(this.gameHeight / this.tileHeight) + 1;
+      log('moduloRange ' + this.moduloRange);
 		}
+
+    pause() {
+
+      this.isPaused = !this.isPaused;
+    }
 
 		waitImageLoading() {
 			log('waitImageLoading');
@@ -135,43 +143,50 @@
 		draw() {
 
 
-			// log('tileWidth  ==> ' + this.tileWidth);
-			// log('tileHeight ==> ' + this.tileHeight);
-
       async.waterfall([
-       
+
+
+        function isPaused(cb) {
+          if (this.isPaused === true) {
+            cb("isPaused");
+          } else {
+            cb(null);
+          }
+        }.bind(this),
          
         function drawBoard(cb) {
 
           this.context.clearRect(0, 0, this.gameWidth, this.gameHeight);
           let tilePtr = null;
           let realNumber =  0;
-          let indexGrid: string = null; 
+          let indexGrid: string = null;
+
+          let cur = null; 
           for (let i = 0; i < 5; i++) {
             for (let j = 0; j < this.moduloRange; j++) {
               indexGrid = i + "-" + j;
               realNumber = ( ( (j + this.moduloTile ) % this.moduloRange) );
-              // if ( (i + j) % 2 === 0 ) {
-              //   index = 0;
-              // } else {
-              //   index = 1;
-              // }
-              //
-              tilePtr = this.currentGrid[indexGrid].imagePtr;
-              this.currentGrid[indexGrid].setYPos(this.tileHeight * (realNumber-1)  +  this.offsetY);
+
+              cur = this.currentGrid[indexGrid];
+              tilePtr = cur.imagePtr;
+              cur.setYPos(this.tileHeight * (realNumber-1)  +  this.offsetY);
 
               this.context.drawImage(tilePtr, 
-                                     this.tileWidth * i,
-                                     //this.currentGrid[indexGrid].xPos, 
-                                     this.currentGrid[indexGrid].yPos, 
+                                     cur.xPos * this.tileWidth, 
+                                     cur.yPos, 
                                      this.tileWidth, 
                                      this.tileHeight);
 
-              this.context.drawImage(this.imageListNumber[realNumber], 
-                                     0, 
-                                     this.tileHeight * (j-1)  +  this.offsetY, 
-                                     this.tileWidth, 
-                                     this.tileHeight);
+              if (typeof(this.imageListNumber[cur.initialYPos]) !== 'undefined') {
+                  
+                this.context.drawImage(this.imageListNumber[cur.initialYPos], 
+                                       0, 
+                                       this.tileHeight * (j-1)  +  this.offsetY, 
+                                       this.tileWidth, 
+                                       this.tileHeight);
+
+
+              }
             }
           }
           cb(null);

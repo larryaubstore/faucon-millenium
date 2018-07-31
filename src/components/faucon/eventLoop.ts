@@ -16,6 +16,11 @@ export class EventLoop {
 	}
 
 
+  pause() {
+    this.game.pause();
+  }
+
+
 	initialize() {
 		document.onkeydown = this.checkKey.bind(this);
 
@@ -26,16 +31,10 @@ export class EventLoop {
 	run() {
 		let skipTicks = 1000 / this.game.fps;
 
-
-
-
 		this.game.draw();
 		setTimeout(() => {
 			this.run();
 		}, skipTicks);
-
-		
-
 	}
 
 

@@ -15,4 +15,9 @@ export class TileEngine {
         console.log('render');
     }
 
+
+    pause() {
+      this.eventLoop.pause();
+    }
+
 }

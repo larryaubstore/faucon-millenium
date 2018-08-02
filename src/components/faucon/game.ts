@@ -203,6 +203,7 @@
           if (this.offsetY > this.tileHeight) {
             this.offsetY = 0;
             this.moduloTile = (this.moduloTile + 1 ) % this.moduloRange;
+            this.verticalIndex = this.verticalIndex + 1;
           }
 
           cb(null);
@@ -216,13 +217,13 @@
 
           this.context.drawImage(this.imageList[2], 
                                  this.tileWidth * this.horizontalIndex, 
-                                 this.tileHeight * this.verticalIndex, 
+                                 this.tileHeight * this.verticalIndex +  this.offsetY, 
                                  this.tileWidth, 
                                  this.tileHeight);
 
           this.context.drawImage(this.imageList[3], 
                                this.tileWidth * this.horizontalIndex, 
-                               this.tileHeight * this.verticalIndex + 1, 
+                               this.tileHeight * this.verticalIndex + 1 +  this.offsetY, 
                                this.tileWidth, 
                                this.tileHeight);
           cb(null);

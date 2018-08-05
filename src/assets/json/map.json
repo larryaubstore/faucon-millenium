@@ -1,0 +1,22 @@
+{
+
+    "tiles":  ["assets/imgs/tileOne.png", 
+        "assets/imgs/tileTwo.png",
+        "assets/imgs/faucon.png",
+        "assets/imgs/picking_green.png"
+    ],
+
+
+    "number": [ "assets/imgs/number0.png",
+          "assets/imgs/number1.png",
+          "assets/imgs/number2.png",
+          "assets/imgs/number3.png",
+          "assets/imgs/number4.png",
+          "assets/imgs/number5.png",
+          "assets/imgs/number6.png",
+          "assets/imgs/number7.png",
+          "assets/imgs/number8.png",
+          "assets/imgs/number9.png"]
+
+
+}

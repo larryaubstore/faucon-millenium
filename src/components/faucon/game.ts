@@ -73,71 +73,93 @@
 		initialize() {
 
 			log('initialize');
-			this.utils.loadJSON('map.json', (data: any) => {
+			this.context = ( document.getElementById("viewport") as any).getContext("2d");
+
+      let dataNumber: [string] = [] as any;
+      let data: [string] = [] as any;
+      let explosion: [string] = [] as any;
+      async.waterfall([
+
+        (cb: any) => {
+          this.utils.loadJSON('./assets/json/map.json', (data: any) => {
+            cb(null, data);
+          });
+        },
+        (json: any, cb: any) => {
+
+          debugger;
+          data = json['tiles'];
+          dataNumber = json['number'];
 
 
-				data = ['assets/imgs/tileOne.png', 
-						'assets/imgs/tileTwo.png',
-						'assets/imgs/faucon.png',
-						'assets/imgs/picking_green.png'
-        ];
-
-        let dataNumber: [string] = [] as any;
+          explosion = [
 
 
-        dataNumber = [
-          'assets/imgs/number0.png',
-          'assets/imgs/number1.png',
-          'assets/imgs/number2.png',
-          'assets/imgs/number3.png',
-          'assets/imgs/number4.png',
-          'assets/imgs/number5.png',
-          'assets/imgs/number6.png',
-          'assets/imgs/number7.png',
-          'assets/imgs/number8.png',
-          'assets/imgs/number9.png'];
 
-				var imagePtr: any = null;
-				for(var i = 0; i < data.length; i++) {
-					imagePtr = new Image();
-					imagePtr.onload = this.waitImageLoading;
-					imagePtr.src = data[i];
-					this.imageList.push(imagePtr);
-				}
+          ];
 
-        for (var i = 0; i < dataNumber.length; i++) {
-					imagePtr = new Image();
-					imagePtr.onload = this.waitImageLoading;
-					imagePtr.src = dataNumber[i];
-					this.imageListNumber.push(imagePtr);
-        }
+          cb(null);
+        }, 
+        (cb: any) => {
+
+          let count = 0;
+          async.whilst( () => {
+
+            return count < json['tiles'].length + json['number'].length;
+          }, 
+          (eachCb: any) => {
+            var imagePtr: any = null;
 
 
-				this.context = ( document.getElementById("viewport") as any).getContext("2d");
-				this.entities = [];
-        /*************/
-        let index = 0;
-        let tile: Tile = null;
-        
-        for (let i = 0; i < 5; i++) {
-          for (let j = 0; j < this.moduloRange; j++) {
-            index = i;
-            
-            tile = new Tile(this.imageList[Math.floor(Math.random() * 2)], 
-                            i, 
-                            j, 
-                            this.tileWidth, 
-                            this.tileHeight, 
-                            0, 
-                            this.context); 
+            if (count < data.length) {
+              imagePtr = new Image();
+              imagePtr.onload = async.apply(function(cb) { cb(null); }, eachCb);
+              imagePtr.src = data[i];
+              this.imageList.push(imagePtr);
+            } else {
+              imagePtr = new Image();
+              imagePtr.onload = async.apply(function(cb) { cb(null); }, eachCb);
+              imagePtr.src = dataNumber[i];
+              this.imageListNumber.push(imagePtr);
+            }
+            count++;
 
-            this.currentGrid[i + "-" + j] = tile; 
+         }, (err: any, n: number) => {
+            if (err) {
+              cb(err);
+            } else {
+              cb(null);
+            }
+         });
+       },
+       (cb: any) => {
+
+          this.entities = [];
+          /*************/
+          let index = 0;
+          let tile: Tile = null;
+          
+          for (let i = 0; i < 5; i++) {
+            for (let j = 0; j < this.moduloRange; j++) {
+              index = i;
+              
+              tile = new Tile(this.imageList[Math.floor(Math.random() * 2)], 
+                              i, 
+                              j, 
+                              this.tileWidth, 
+                              this.tileHeight, 
+                              0, 
+                              this.context); 
+
+              this.currentGrid[i + "-" + j] = tile; 
+            }
           }
-        }
-        /*************/
-		
 
-			});
+          cb(null);
+       }], (err: any) => {
+
+
+       });
 		}
 
 		draw() {

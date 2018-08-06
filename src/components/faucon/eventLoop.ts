@@ -21,11 +21,15 @@ export class EventLoop {
   }
 
 
-	initialize() {
+	async initialize() {
 		document.onkeydown = this.checkKey.bind(this);
 
-		this.game.initialize();
-		this.run();
+    try {
+  		await this.game.initialize();
+		  this.run();
+    } catch (err) {
+      log('error ==> ' + err);
+    }
 	}
 
 	run() {

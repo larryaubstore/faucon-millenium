@@ -70,96 +70,102 @@
 			log('waitImageLoading');
 		}
 
-		initialize() {
+		async initialize() {
+      log('initialize');
+      return new Promise( (resolve, reject) => {
+        this.context = ( document.getElementById("viewport") as any).getContext("2d");
 
-			log('initialize');
-			this.context = ( document.getElementById("viewport") as any).getContext("2d");
+        let dataNumber: [string] = [] as any;
+        let data: [string] = [] as any;
+        let explosion: [string] = [] as any;
+        async.waterfall([
 
-      let dataNumber: [string] = [] as any;
-      let data: [string] = [] as any;
-      let explosion: [string] = [] as any;
-      async.waterfall([
+          (cb: any) => {
+            this.utils.loadJSON('./assets/json/map.json', (data: any) => {
+              cb(null, data);
+            });
+          },
+          (json: any, cb: any) => {
 
-        (cb: any) => {
-          this.utils.loadJSON('./assets/json/map.json', (data: any) => {
-            cb(null, data);
-          });
-        },
-        (json: any, cb: any) => {
-
-          debugger;
-          data = json['tiles'];
-          dataNumber = json['number'];
-
-
-          explosion = [
+            data = json['tiles'];
+            dataNumber = json['number'];
 
 
+            // explosion = [
 
-          ];
 
-          cb(null);
-        }, 
-        (cb: any) => {
 
-          let count = 0;
-          async.whilst( () => {
+            // ] as any;
 
-            return count < json['tiles'].length + json['number'].length;
+            cb(null);
           }, 
-          (eachCb: any) => {
-            var imagePtr: any = null;
+          (cb: any) => {
+
+            let count = 0;
+            async.whilst( () => {
+
+              log( 'count ==> ' + count);
+              log( 'total ==> ' +  (data.length + dataNumber.length));
+              return count < (data.length + dataNumber.length);
+            }, 
+            (eachCb: any) => {
+              var imagePtr: any = null;
 
 
-            if (count < data.length) {
-              imagePtr = new Image();
-              imagePtr.onload = async.apply(function(cb) { cb(null); }, eachCb);
-              imagePtr.src = data[i];
-              this.imageList.push(imagePtr);
-            } else {
-              imagePtr = new Image();
-              imagePtr.onload = async.apply(function(cb) { cb(null); }, eachCb);
-              imagePtr.src = dataNumber[i];
-              this.imageListNumber.push(imagePtr);
+              if (count < data.length) {
+                imagePtr = new Image();
+                imagePtr.onload = async.apply(function(cb) { cb(null); }, eachCb);
+                imagePtr.src = data[count];
+                this.imageList.push(imagePtr);
+              } else {
+                imagePtr = new Image();
+                imagePtr.onload = async.apply(function(cb) { cb(null); }, eachCb);
+                imagePtr.src = dataNumber[count - data.length];
+                this.imageListNumber.push(imagePtr);
+              }
+              count++;
+
+           }, (err: any, n: number) => {
+              if (err) {
+                cb(err);
+              } else {
+                cb(null);
+              }
+           });
+         },
+         (cb: any) => {
+
+            this.entities = [];
+            /*************/
+            let index = 0;
+            let tile: Tile = null;
+            
+            for (let i = 0; i < 5; i++) {
+              for (let j = 0; j < this.moduloRange; j++) {
+                index = i;
+                
+                tile = new Tile(this.imageList[Math.floor(Math.random() * 2)], 
+                                i, 
+                                j, 
+                                this.tileWidth, 
+                                this.tileHeight, 
+                                0, 
+                                this.context); 
+
+                this.currentGrid[i + "-" + j] = tile; 
+              }
             }
-            count++;
 
-         }, (err: any, n: number) => {
+            cb(null);
+         }], (err) => {
+
             if (err) {
-              cb(err);
+              reject(err);
             } else {
-              cb(null);
+              resolve(null);
             }
          });
-       },
-       (cb: any) => {
-
-          this.entities = [];
-          /*************/
-          let index = 0;
-          let tile: Tile = null;
-          
-          for (let i = 0; i < 5; i++) {
-            for (let j = 0; j < this.moduloRange; j++) {
-              index = i;
-              
-              tile = new Tile(this.imageList[Math.floor(Math.random() * 2)], 
-                              i, 
-                              j, 
-                              this.tileWidth, 
-                              this.tileHeight, 
-                              0, 
-                              this.context); 
-
-              this.currentGrid[i + "-" + j] = tile; 
-            }
-          }
-
-          cb(null);
-       }], (err: any) => {
-
-
-       });
+      });
 		}
 
 		draw() {

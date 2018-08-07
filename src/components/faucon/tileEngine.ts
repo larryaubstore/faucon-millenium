@@ -20,4 +20,8 @@ export class TileEngine {
       this.eventLoop.pause();
     }
 
+    explosion() {
+      this.eventLoop.explosion();
+    }
+
 }

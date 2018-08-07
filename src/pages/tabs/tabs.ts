@@ -25,7 +25,11 @@ export class TabsPage {
   settingButton() {
     log('settingButton');
     this.events.publish('game-channel', 'pause');
+  }
 
+  explosionButton() {
+    log('explosionButton');
+    this.events.publish('game-channel', 'explosion');
   }
 
   playButton() {

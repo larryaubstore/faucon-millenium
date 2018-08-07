@@ -30,9 +30,13 @@
 
     imageListNumber: any = [];
 
+    imageListExplosion: any = [];
+
 		utils: Utils;
 
     isPaused = false;
+
+    isExplosion = -1;
 
     currentGrid: any = {};
 
@@ -62,8 +66,11 @@
 		}
 
     pause() {
-
       this.isPaused = !this.isPaused;
+    }
+
+    explosion() {
+      this.isExplosion =  this.imageListExplosion.length;
     }
 
 		waitImageLoading() {
@@ -80,33 +87,27 @@
         let explosion: [string] = [] as any;
         async.waterfall([
 
-          (cb: any) => {
+          function loadMapJson(cb: any) {
             this.utils.loadJSON('./assets/json/map.json', (data: any) => {
               cb(null, data);
             });
-          },
+          }.bind(this),
           (json: any, cb: any) => {
 
             data = json['tiles'];
             dataNumber = json['number'];
-
-
-            // explosion = [
-
-
-
-            // ] as any;
+            explosion = json['explosion'];
 
             cb(null);
           }, 
-          (cb: any) => {
+          function loadImages(cb: any) {
 
             let count = 0;
             async.whilst( () => {
 
               log( 'count ==> ' + count);
               log( 'total ==> ' +  (data.length + dataNumber.length));
-              return count < (data.length + dataNumber.length);
+              return count < (data.length + dataNumber.length + explosion.length);
             }, 
             (eachCb: any) => {
               var imagePtr: any = null;
@@ -117,11 +118,17 @@
                 imagePtr.onload = async.apply(function(cb) { cb(null); }, eachCb);
                 imagePtr.src = data[count];
                 this.imageList.push(imagePtr);
-              } else {
+              } else if (count < (data.length + dataNumber.length)) {
                 imagePtr = new Image();
                 imagePtr.onload = async.apply(function(cb) { cb(null); }, eachCb);
                 imagePtr.src = dataNumber[count - data.length];
                 this.imageListNumber.push(imagePtr);
+              } else {
+                imagePtr = new Image();
+                imagePtr.onload = async.apply(function(cb) { cb(null); }, eachCb);
+                imagePtr.src = explosion[count - data.length - dataNumber.length];
+                this.imageListExplosion.push(imagePtr);
+
               }
               count++;
 
@@ -132,8 +139,8 @@
                 cb(null);
               }
            });
-         },
-         (cb: any) => {
+         }.bind(this),
+         function buildGrid(cb: any) {
 
             this.entities = [];
             /*************/
@@ -157,7 +164,7 @@
             }
 
             cb(null);
-         }], (err) => {
+         }.bind(this)], (err) => {
 
             if (err) {
               reject(err);
@@ -181,7 +188,8 @@
             cb(null);
           }
         }.bind(this),
-         
+
+        
         function drawBoard(cb) {
 
           this.context.clearRect(0, 0, this.gameWidth, this.gameHeight);
@@ -238,6 +246,40 @@
 
         }.bind(this), 
 
+        function checkExplosion(cb) {
+
+
+          if (this.isExplosion === 1) {
+
+            let index = this.imageListExplosion.length - this.isExplosion;
+            this.context.drawImage(this.imageListExplosion[index], 
+                                 this.tileWidth * this.horizontalIndex, 
+                                 this.tileHeight * this.verticalIndex +  this.offsetY, 
+                                 this.tileWidth, 
+                                 this.tileHeight);
+
+
+            cb('SKIP');
+          } else if (this.isExplosion !== -1) {
+
+            log('isExplosion => ' + this.isExplosion);
+            let index = this.imageListExplosion.length - this.isExplosion;
+            //log('explosion INDEX => ' + index);
+            this.context.drawImage(this.imageListExplosion[index], 
+                                 this.tileWidth * this.horizontalIndex, 
+                                 this.tileHeight * this.verticalIndex +  this.offsetY, 
+                                 this.tileWidth, 
+                                 this.tileHeight);
+
+
+            this.isExplosion--;
+            cb('SKIP');
+          } else {
+            cb(null);
+          }
+
+        }.bind(this),
+ 
 
         function drawFaucon(cb) {
 
@@ -257,8 +299,11 @@
           cb(null);
         }.bind(this)
         ], (err: any) => {
+          if (err === 'SKIP') {
 
+          } else {
 
+          }
         });
 
 

@@ -20,6 +20,10 @@ export class EventLoop {
     this.game.pause();
   }
 
+  explosion() {
+    this.game.explosion();
+  }
+
 
 	async initialize() {
 		document.onkeydown = this.checkKey.bind(this);

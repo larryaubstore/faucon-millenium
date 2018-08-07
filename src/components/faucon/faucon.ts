@@ -27,8 +27,14 @@ export class Faucon implements OnInit, AfterViewInit {
 
   subscribeEvents(events: Events) {
     events.subscribe('game-channel', (message) => {
-      if (message === 'pause') {
-        this.pause();
+
+      switch(message) {
+        case 'pause':
+          this.pause();
+          break;
+        case 'explosion':
+          this.explosion();
+          break;
       }
     });
   }
@@ -39,6 +45,10 @@ export class Faucon implements OnInit, AfterViewInit {
 
   pause() {
     this.tileEngine.pause();
+  }
+
+  explosion() {
+    this.tileEngine.explosion();
   }
 
   ngAfterViewInit() {

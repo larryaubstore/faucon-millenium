@@ -70,7 +70,12 @@
     }
 
     explosion() {
-      this.isExplosion =  this.imageListExplosion.length;
+
+      if (this.isExplosion === -1) {
+        this.isExplosion =  this.imageListExplosion.length;
+      } else {
+        this.isExplosion = -1; 
+      }
     }
 
 		waitImageLoading() {
@@ -249,14 +254,14 @@
         function checkExplosion(cb) {
 
 
-          if (this.isExplosion === 1) {
+          if (this.isExplosion <= 5 && this.isExplosion !== -1 ) {
 
             let index = this.imageListExplosion.length - this.isExplosion;
             this.context.drawImage(this.imageListExplosion[index], 
-                                 this.tileWidth * this.horizontalIndex, 
-                                 this.tileHeight * this.verticalIndex +  this.offsetY, 
-                                 this.tileWidth, 
-                                 this.tileHeight);
+                                 this.tileWidth * this.horizontalIndex - 45 , 
+                                 this.tileHeight * this.verticalIndex +  this.offsetY - (96 / 2), 
+                                 this.tileWidth * 2, 
+                                 this.tileHeight * 2);
 
 
             cb('SKIP');
@@ -266,13 +271,13 @@
             let index = this.imageListExplosion.length - this.isExplosion;
             //log('explosion INDEX => ' + index);
             this.context.drawImage(this.imageListExplosion[index], 
-                                 this.tileWidth * this.horizontalIndex, 
-                                 this.tileHeight * this.verticalIndex +  this.offsetY, 
-                                 this.tileWidth, 
-                                 this.tileHeight);
+                                 this.tileWidth * this.horizontalIndex - 45, 
+                                 this.tileHeight * this.verticalIndex +  this.offsetY - (96 / 2), 
+                                 this.tileWidth * 2, 
+                                 this.tileHeight * 2);
 
 
-            this.isExplosion--;
+            this.isExplosion = this.isExplosion - 1;
             cb('SKIP');
           } else {
             cb(null);

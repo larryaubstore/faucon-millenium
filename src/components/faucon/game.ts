@@ -28,9 +28,10 @@
 
 		imageList: any = [];
 
-    imageListNumber: any = [];
+    aliasMap: any = {};
 
-    imageListExplosion: any = [];
+    srcList: any = [];
+
 
 		utils: Utils;
 
@@ -48,21 +49,11 @@
 			this.horizontalIndex = horizontalIndex;
 			this.utils = new Utils();
 
-			// this.tileWidth = 180 / 2;
-			// this.tileHeight = 192 / 2;
-
-			this.tileWidth = 82;
-			this.tileHeight = 87;
-
 			this.gameWidth = containerWidth;
 			this.gameHeight = containerHeight;
 
 			this.offsetY = 0;
-
       this.moduloTile = 0;
-      // this.moduloRange = 6;
-      this.moduloRange = Math.ceil(this.gameHeight / this.tileHeight) + 1;
-      log('moduloRange ' + this.moduloRange);
 		}
 
     pause() {
@@ -72,7 +63,7 @@
     explosion() {
 
       if (this.isExplosion === -1) {
-        this.isExplosion =  this.imageListExplosion.length;
+        this.isExplosion =  this.aliasMap['explosion'].length;
       } else {
         this.isExplosion = -1; 
       }
@@ -87,9 +78,7 @@
       return new Promise( (resolve, reject) => {
         this.context = ( document.getElementById("viewport") as any).getContext("2d");
 
-        let dataNumber: [string] = [] as any;
-        let data: [string] = [] as any;
-        let explosion: [string] = [] as any;
+        let jsonData: any = null;
         async.waterfall([
 
           function loadMapJson(cb: any) {
@@ -99,42 +88,50 @@
           }.bind(this),
           (json: any, cb: any) => {
 
-            data = json['tiles'];
-            dataNumber = json['number'];
-            explosion = json['explosion'];
+            jsonData = json;
+            this.tileWidth = jsonData['tileWidth'];
+            this.tileHeight = jsonData['tileHeight'];
+            this.moduloRange = Math.ceil(this.gameHeight / this.tileHeight) + 1;
+
 
             cb(null);
           }, 
           function loadImages(cb: any) {
 
+            let total = 0;
+            for (var name in jsonData['images']) {
+                if (jsonData['images'].hasOwnProperty(name)) {
+                    this.aliasMap[name] = { 
+                      begin: total, 
+                      end: total + jsonData['images'][name].length,
+                      length: jsonData['images'][name].length - total
+                    };
+                    total = total + jsonData['images'][name].length;
+
+
+                    for (var i = 0; i < jsonData['images'][name].length; i++) {
+                      this.srcList.push(jsonData['images'][name][i]);
+                    }
+                }
+            } 
+
             let count = 0;
             async.whilst( () => {
 
               log( 'count ==> ' + count);
-              log( 'total ==> ' +  (data.length + dataNumber.length));
-              return count < (data.length + dataNumber.length + explosion.length);
+              log( 'total ==> ' +  (total));
+              return count < (total);
             }, 
             (eachCb: any) => {
               var imagePtr: any = null;
 
 
-              if (count < data.length) {
+              if (count < total) {
                 imagePtr = new Image();
                 imagePtr.onload = async.apply(function(cb) { cb(null); }, eachCb);
-                imagePtr.src = data[count];
+                imagePtr.src = this.srcList[count];
                 this.imageList.push(imagePtr);
-              } else if (count < (data.length + dataNumber.length)) {
-                imagePtr = new Image();
-                imagePtr.onload = async.apply(function(cb) { cb(null); }, eachCb);
-                imagePtr.src = dataNumber[count - data.length];
-                this.imageListNumber.push(imagePtr);
-              } else {
-                imagePtr = new Image();
-                imagePtr.onload = async.apply(function(cb) { cb(null); }, eachCb);
-                imagePtr.src = explosion[count - data.length - dataNumber.length];
-                this.imageListExplosion.push(imagePtr);
-
-              }
+              } 
               count++;
 
            }, (err: any, n: number) => {
@@ -218,16 +215,16 @@
                                      this.tileWidth, 
                                      this.tileHeight);
 
-              if (typeof(this.imageListNumber[cur.initialYPos]) !== 'undefined') {
-                  
-                this.context.drawImage(this.imageListNumber[cur.initialYPos], 
+              
+              if (cur.initialYPos <= this.aliasMap['number'].length + 2) {    
+                this.context.drawImage(this.imageList[this.aliasMap['number'].length + cur.initialYPos - 1], 
                                        0, 
                                        this.tileHeight * (j-1)  +  this.offsetY, 
                                        this.tileWidth, 
                                        this.tileHeight);
-
-
               }
+
+
             }
           }
           cb(null);
@@ -256,8 +253,11 @@
 
           if (this.isExplosion <= 5 && this.isExplosion !== -1 ) {
 
-            let index = this.imageListExplosion.length - this.isExplosion;
-            this.context.drawImage(this.imageListExplosion[index], 
+            let index = this.aliasMap['explosion'].length - this.isExplosion;
+
+            ///////////////
+
+            this.context.drawImage(this.imageList[index + this.aliasMap[explosion].begin], 
                                  this.tileWidth * this.horizontalIndex - 45 , 
                                  this.tileHeight * this.verticalIndex +  this.offsetY - (96 / 2), 
                                  this.tileWidth * 2, 
@@ -268,9 +268,9 @@
           } else if (this.isExplosion !== -1) {
 
             log('isExplosion => ' + this.isExplosion);
-            let index = this.imageListExplosion.length - this.isExplosion;
+            let index = this.aliasMap['explosion'].length - this.isExplosion;
             //log('explosion INDEX => ' + index);
-            this.context.drawImage(this.imageListExplosion[index], 
+            this.context.drawImage(this.imageList[index + this.aliasMap[explosion].begin], 
                                  this.tileWidth * this.horizontalIndex - 45, 
                                  this.tileHeight * this.verticalIndex +  this.offsetY - (96 / 2), 
                                  this.tileWidth * 2, 
@@ -289,7 +289,6 @@
         function drawFaucon(cb) {
 
           
-
           this.context.drawImage(this.imageList[2], 
                                  this.tileWidth * this.horizontalIndex, 
                                  this.tileHeight * this.verticalIndex +  this.offsetY, 

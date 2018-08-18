@@ -5,9 +5,7 @@
 
     "images": {
 
-      "mountains": ["assets/imgs/tileOne.png"],
-
-      "plaine": ["assets/imgs/tileTwo.png"],
+      "tile": ["assets/imgs/convert/sand.png" , "assets/imgs/convert/mask_over_mountains.png", "assets/imgs/convert/tileTwo.png"],
 
       "faucon": ["assets/imgs/faucon.png"],
 

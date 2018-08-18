@@ -153,7 +153,7 @@
               for (let j = 0; j < this.moduloRange; j++) {
                 index = i;
                 
-                tile = new Tile(this.imageList[Math.floor(Math.random() * 2)], 
+                tile = new Tile(this.imageList[Math.floor(Math.random() * this.aliasMap['tile'].length)], 
                                 i, 
                                 j, 
                                 this.tileWidth, 
@@ -216,13 +216,13 @@
                                      this.tileHeight);
 
               
-              if (cur.initialYPos <= this.aliasMap['number'].length + 2) {    
-                this.context.drawImage(this.imageList[this.aliasMap['number'].length + cur.initialYPos - 1], 
-                                       0, 
-                                       this.tileHeight * (j-1)  +  this.offsetY, 
-                                       this.tileWidth, 
-                                       this.tileHeight);
-              }
+              // if (cur.initialYPos <= this.aliasMap['number'].length + 2) {    
+              //   this.context.drawImage(this.imageList[this.aliasMap['number'].length + cur.initialYPos], 
+              //                          0, 
+              //                          this.tileHeight * (j-1)  +  this.offsetY, 
+              //                          this.tileWidth, 
+              //                          this.tileHeight);
+              // }
 
 
             }
@@ -257,7 +257,7 @@
 
             ///////////////
 
-            this.context.drawImage(this.imageList[index + this.aliasMap[explosion].begin], 
+            this.context.drawImage(this.imageList[index + this.aliasMap['explosion'].begin], 
                                  this.tileWidth * this.horizontalIndex - 45 , 
                                  this.tileHeight * this.verticalIndex +  this.offsetY - (96 / 2), 
                                  this.tileWidth * 2, 
@@ -270,7 +270,7 @@
             log('isExplosion => ' + this.isExplosion);
             let index = this.aliasMap['explosion'].length - this.isExplosion;
             //log('explosion INDEX => ' + index);
-            this.context.drawImage(this.imageList[index + this.aliasMap[explosion].begin], 
+            this.context.drawImage(this.imageList[index + this.aliasMap['explosion'].begin], 
                                  this.tileWidth * this.horizontalIndex - 45, 
                                  this.tileHeight * this.verticalIndex +  this.offsetY - (96 / 2), 
                                  this.tileWidth * 2, 
@@ -289,13 +289,13 @@
         function drawFaucon(cb) {
 
           
-          this.context.drawImage(this.imageList[2], 
+          this.context.drawImage(this.imageList[this.aliasMap['faucon'].begin], 
                                  this.tileWidth * this.horizontalIndex, 
                                  this.tileHeight * this.verticalIndex +  this.offsetY, 
                                  this.tileWidth, 
                                  this.tileHeight);
 
-          this.context.drawImage(this.imageList[3], 
+          this.context.drawImage(this.imageList[this.aliasMap['faucon'].begin + 1], 
                                this.tileWidth * this.horizontalIndex, 
                                this.tileHeight * this.verticalIndex + 1 +  this.offsetY, 
                                this.tileWidth, 

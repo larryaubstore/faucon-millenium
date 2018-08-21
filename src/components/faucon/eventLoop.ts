@@ -7,6 +7,9 @@ const log = debug('eventLoop');
 export class EventLoop {
 
 	game: Game = null;
+  originalHorizontalIndex: number = 0;
+  touchStartPos: number = 0;
+
 
 
 	constructor(containerWidth: number, containerHeight: number) {
@@ -27,6 +30,9 @@ export class EventLoop {
 
 	async initialize() {
 		document.onkeydown = this.checkKey.bind(this);
+    document.ontouchmove = this.touchMove.bind(this);
+    document.ontouchstart = this.touchStart.bind(this);
+    
 
     try {
   		await this.game.initialize();
@@ -46,23 +52,29 @@ export class EventLoop {
 	}
 
 
-  handleStart(evt: any) {
-    evt.preventDefault();
-    var touches = evt.changedTouches;
-    
-    if (touches.length > 1) {
-      //let xTouch = touches[0].pageX;
-      //let yTouch = touches[0].pageY;
-    }
+  touchStart(evt: any) {
+    log('touchStart');
+    log(evt.changedTouches[0].pageX);
+    this.originalHorizontalIndex = this.game.horizontalIndex;
+    this.touchStartPos = evt.changedTouches[0].pageX;
 
-          
+  }
+
+  touchMove(evt: any) {
+    log('touchMove');
+    log(evt.changedTouches[0].pageX);
+
+     let delta: number = (this.touchStartPos - evt.changedTouches[0].pageX) / (window.innerWidth / 5);
+     this.game.moveHorizontally(this.originalHorizontalIndex - delta);
+
+    
+    // let xPos: number = (evt.changedTouches[0].pageX - 50) /  window.innerWidth * 5;
+    // this.game.moveHorizontally(xPos);
+
   }
 
 	checkKey(e: any) {
 		e = e || window.event;
-
-
-
 
 		console.log('verticalIndex 		==> ' + this.game.verticalIndex);
 		console.log('horizontalIndex 	==> ' + this.game.horizontalIndex);

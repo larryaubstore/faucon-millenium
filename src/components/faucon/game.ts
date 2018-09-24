@@ -1,18 +1,19 @@
-	import * as debug					from 'debug';
-  import * as async         from 'async';
-  import { Tile }           from './models/tile';
+	import * as debug					      from 'debug';
+  import * as async               from 'async';
+  import { Tile }                 from './models/tile';
 
 
-  import isPaused           from './rules/isPaused';
-  import drawBoard          from './rules/drawBoard';
-  import checkBlocked       from './rules/checkBlocked';
-  import checkExplosion     from './rules/checkExplosion';
-  import drawFaucon         from './rules/drawFaucon';
+  import isPaused                 from './rules/isPaused';
+  import drawBoard                from './rules/drawBoard';
+  import checkBlocked             from './rules/checkBlocked';
+  import checkExplosion           from './rules/checkExplosion';
+  import checkExplosionMountains  from './rules/checkExplosionMountains';
+  import drawFaucon               from './rules/drawFaucon';
 
-  import loadMapJson        from './rules/loadMapJson';
-  import initContext        from './rules/initContext';
-  import loadImages         from './rules/loadImages';
-  import buildGrid          from './rules/buildGrid';
+  import loadMapJson              from './rules/loadMapJson';
+  import initContext              from './rules/initContext';
+  import loadImages               from './rules/loadImages';
+  import buildGrid                from './rules/buildGrid';
 	
 	
 	const log = debug('game');
@@ -38,6 +39,7 @@
     collisionOffsetX = 0;
     collisionOffsetY = 0;
     isExplosion = -1;
+    isExplosionMountains = -1;
     centerPosition = 2;
 
 
@@ -169,7 +171,9 @@
 
         checkExplosion.bind(this),
 
-        drawFaucon.bind(this)
+        drawFaucon.bind(this),
+
+        checkExplosionMountains.bind(this)
 
 
        ], (err: any) => {

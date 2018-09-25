@@ -1,5 +1,7 @@
-import { Game } 	from './game';
-import * as debug  	from 'debug';
+import { Game } 	    from './game';
+import { Faucon } 	  from './faucon';
+import * as debug  	  from 'debug';
+import * as rafLoop   from 'raf-loop';
 
 
 const log = debug('eventLoop');
@@ -12,12 +14,19 @@ export class EventLoop {
 
 
 
-	constructor(containerWidth: number, containerHeight: number) {
+	constructor(containerWidth: number, containerHeight: number, faucon: Faucon) {
     log('eventLoop');
-		this.game = new Game(30, 0, containerWidth, containerHeight);
+		this.game = new Game(0, containerWidth, containerHeight, faucon);
 
 	}
 
+  isPaused() {
+    return this.game.isPaused;
+  }
+
+  isOverlay() {
+    return this.game.isOverlay;
+  }
 
   pause() {
     this.game.pause();
@@ -25,6 +34,14 @@ export class EventLoop {
 
   explosion() {
     this.game.explosion();
+  }
+
+  hideOverlay() {
+    this.game.hideOverlay();
+  }
+
+  isInitialMode() {
+    return this.game.isInitialMode();
   }
 
 
@@ -36,19 +53,16 @@ export class EventLoop {
 
     try {
   		await this.game.initialize();
-		  this.run();
+      var engine = rafLoop((dt) => {
+  		  this.run();
+      }).start();
     } catch (err) {
       log('error ==> ' + err);
     }
 	}
 
 	run() {
-		let skipTicks = 1000 / this.game.fps;
-
 		this.game.draw();
-		setTimeout(() => {
-			this.run();
-		}, skipTicks);
 	}
 
 

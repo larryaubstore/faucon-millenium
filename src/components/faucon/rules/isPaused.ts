@@ -1,6 +1,6 @@
 export default function isPaused(cb) {
   if (this.isPaused === true) {
-    cb("isPaused");
+    cb("SKIP");
   } else {
     cb(null);
   }

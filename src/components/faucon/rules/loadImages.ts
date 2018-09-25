@@ -10,14 +10,17 @@ export default function loadImages(cb: any) {
        if (this.jsonData['images'].hasOwnProperty(name)) {
            this.aliasMap[name] = { 
              begin: total, 
-             end: total + this.jsonData['images'][name].length,
-             length: this.jsonData['images'][name].length - total
+             end: total + this.jsonData['images'][name]['files'].length
            };
-           total = total + this.jsonData['images'][name].length;
 
 
-           for (var i = 0; i < this.jsonData['images'][name].length; i++) {
-             this.srcList.push(this.jsonData['images'][name][i]);
+           this.aliasMap[name].length = this.aliasMap[name].end - this.aliasMap[name].begin;
+
+           total = total + this.jsonData['images'][name]['files'].length;
+
+
+           for (var i = 0; i < this.jsonData['images'][name]['files'].length; i++) {
+             this.srcList.push(this.jsonData['images'][name]['files'][i]);
            }
        }
    } 

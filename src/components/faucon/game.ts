@@ -1,26 +1,32 @@
-	import * as debug					      from 'debug';
-  import * as async               from 'async';
-  import { Tile }                 from './models/tile';
+import * as debug			          from 'debug';
+import * as async               from 'async';
+import { Faucon }               from './faucon';
+import { Tile }                 from './models/tile';
+import { TileType }             from './models/tileType';
 
 
-  import isPaused                 from './rules/isPaused';
-  import drawBoard                from './rules/drawBoard';
-  import checkBlocked             from './rules/checkBlocked';
-  import checkExplosion           from './rules/checkExplosion';
-  import checkExplosionMountains  from './rules/checkExplosionMountains';
-  import drawFaucon               from './rules/drawFaucon';
+import isPaused                 from './rules/isPaused';
+import drawBoard                from './rules/drawBoard';
+import checkBlocked             from './rules/checkBlocked';
+import checkEndGame             from './rules/checkEndGame';
+import checkExplosion           from './rules/checkExplosion';
+import drawFaucon               from './rules/drawFaucon';
 
-  import loadMapJson              from './rules/loadMapJson';
-  import initContext              from './rules/initContext';
-  import loadImages               from './rules/loadImages';
-  import buildGrid                from './rules/buildGrid';
+import loadMapJson              from './rules/loadMapJson';
+import initContext              from './rules/initContext';
+import loadImages               from './rules/loadImages';
+import buildGrid                from './rules/buildGrid';
+import moveFauconDemoMode       from './rules/moveFauconDemoMode';
+import oneMoreLine              from './rules/oneMoreLine';
+
 	
 	
-	const log = debug('game');
+const log = debug('game');
   
-	export class Game {
+export class Game {
 
-		fps = 20;
+    faucon: Faucon = null;
+		fps = 0;
 		horizontalIndex = 0;
 		verticalIndex = 0;
 		entities = [];
@@ -36,6 +42,7 @@
 
     moduloTile = 0;
     moduloRange = 0;
+    currentModuloTile = 0;
     collisionOffsetX = 0;
     collisionOffsetY = 0;
     isExplosion = -1;
@@ -45,8 +52,7 @@
 
     collisionList: any = [];
     srcList: any = [];
-		imageList: any = [];
-
+	  imageList: any = [];
     explosionMap: any = [];
 
     /*
@@ -64,11 +70,19 @@
      */
     isPaused = false;
 
+    /*
+     * Propriété pour mettre un 'overlay'
+     */
+    isOverlay = true;
 
     /*
      * Grille [rangée-colonne]
      */
     gridMap: any = {};
+
+
+    realPositionMap: any = {};
+
 
     /*
      * Grille [rangée-colonne] 
@@ -79,11 +93,12 @@
 
     jsonData: any = null;
 
-		constructor(fps: number, 
-                horizontalIndex: number, 
+    frameCounter = 0;
+
+		constructor(horizontalIndex: number, 
                 containerWidth: number, 
-                containerHeight: number) {
-			this.fps = fps;
+                containerHeight: number,
+                faucon: Faucon) {
 			this.horizontalIndex = horizontalIndex;
 
 			this.gameWidth = containerWidth;
@@ -91,12 +106,22 @@
 
 			this.offsetY = 0;
       this.moduloTile = 0;
+      this.currentModuloTile = 0;
+      this.faucon = faucon;
 		}
 
     pause() {
       this.isPaused = !this.isPaused;
+      this.isOverlay = this.isPaused;
     }
 
+    hideOverlay() {
+      this.isOverlay = false;
+    }
+
+		isInitialMode() {
+    	return !this.isPaused && this.isOverlay;
+   	}
 
     /*
      * Méthode qui provoque une explosion et/ou 
@@ -115,44 +140,35 @@
       }
     }
 
-		waitImageLoading() {
-			log('waitImageLoading');
-		}
-
-
-    isBlocked() {
-        let indexGrid = Math.ceil(this.horizontalIndex) + "-" + this.centerPosition;
-        let cur: Tile = this.liveMap[indexGrid];
-        if (cur.collision === 'collision' && this.offsetY > 25) {
-          return true;
-        } else {
-          return false;
-        }
+    waitImageLoading() {
+      log('waitImageLoading');
     }
 
-		async initialize() {
-      log('initialize');
-      return new Promise( (resolve, reject) => {
 
-        async.waterfall([
 
-          loadMapJson.bind(this),
+    async initialize() {
+        log('initialize');
+        return new Promise( (resolve, reject) => {
 
-          initContext.bind(this),
+          async.waterfall([
 
-          loadImages.bind(this),
+            loadMapJson.bind(this),
 
-          buildGrid.bind(this)
+            initContext.bind(this),
 
-        ], (err) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve(null);
-            }
+            loadImages.bind(this),
+
+            buildGrid.bind(this)
+
+          ], (err) => {
+              if (err) {
+                reject(err);
+              } else {
+                resolve(null);
+              }
+          });
         });
-      });
-		}
+    }
 
 		draw() {
 
@@ -164,27 +180,29 @@
 
 
         isPaused.bind(this),
-
+        
         drawBoard.bind(this),
         
-        checkBlocked.bind(this), 
-
         checkExplosion.bind(this),
 
         drawFaucon.bind(this),
 
-        checkExplosionMountains.bind(this)
+        moveFauconDemoMode.bind(this),
+        
+        checkBlocked.bind(this),
+
+        checkEndGame.bind(this),
+        
+        oneMoreLine.bind(this)
 
 
        ], (err: any) => {
           if (err === 'SKIP') {
 
-          } else {
-
+          } else if (err) {
+            console.log(err);
           }
         });
-
-
 		}
 
 	  up() {
@@ -206,18 +224,20 @@
 		}
 	
 		left () {
-			log('LEFT');
+      log('LEFT');
+      this.horizontalIndex = Math.floor(this.horizontalIndex);
 			this.horizontalIndex = this.horizontalIndex - 1;
 			if (this.horizontalIndex < 0) {
 				this.horizontalIndex = 0;
-			}
+			} 
 		}
 	
 		right () {
 			log('RIGHT');
+      this.horizontalIndex = Math.floor(this.horizontalIndex);
 			this.horizontalIndex = this.horizontalIndex + 1;
-			if (this.horizontalIndex > 5) {
-				this.horizontalIndex = 5;
+			if (this.horizontalIndex > 4) {
+				this.horizontalIndex = 4;
 			}
 		}
 
@@ -230,15 +250,5 @@
       } else {
         this.horizontalIndex = xPos as any;
       }
-
     }
-	
 }
-
-  
-
-
-
-
-
-

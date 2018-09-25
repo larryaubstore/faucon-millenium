@@ -1,4 +1,8 @@
-import { Tile }           from '../models/tile';
+import { Tile }                       from '../models/tile';
+import { TileType }                   from '../models/tileType';
+
+import drawNormalType                 from './drawNormalType'; 
+import drawMountainsExplosionType     from './drawMountainsExplosionType'; 
 
 export default function drawBoard(cb) {
 
@@ -6,12 +10,15 @@ export default function drawBoard(cb) {
   let tilePtr = null;
   let realNumber =  0;
   let indexGrid: string = null;
+  let readIndexGrid: string = null;
 
   let cur: Tile = null; 
   for (let i = 0; i < 5; i++) {
     for (let j = 0; j < this.moduloRange; j++) {
       indexGrid = i + "-" + j;
+
       realNumber = ( ( (j + this.moduloTile ) % this.moduloRange) );
+      readIndexGrid = i + '-' + realNumber;
 
       cur = this.gridMap[indexGrid];
       tilePtr = cur.imagePtr;
@@ -19,11 +26,25 @@ export default function drawBoard(cb) {
       cur.setOffsetY(this.offsetY);
       cur.setYPos(realNumber - 1);
 
-      this.context.drawImage(tilePtr, 
-                             cur.xPos * this.tileWidth, 
-                             cur.getCalcYPos(), 
-                             this.tileWidth, 
-                             this.tileHeight);
+      
+      this.realPositionMap[readIndexGrid] = cur;
+
+      switch(cur.tileType) {
+        case TileType.Normal:
+          drawNormalType.bind(this)(cur);
+          break;
+        case TileType.MountainExplosion:
+          drawMountainsExplosionType.bind(this)(cur);
+          break;
+        case TileType.FauconExplosion:
+          break;
+      }
+
+      ////this.context.drawImage(tilePtr, 
+      ////                       cur.xPos * this.tileWidth, 
+      ////                       cur.getCalcYPos(), 
+      ////                       this.tileWidth, 
+      ////                       this.tileHeight);
 
       
       // if (cur.initialYPos <= this.aliasMap['number'].length + 2) {    
@@ -35,6 +56,16 @@ export default function drawBoard(cb) {
       // }
 
 
+    }
+  }
+
+  for (let i = 0; i < 5; i++) {
+    for (let j = 0; j < this.moduloRange; j++) {
+      indexGrid = i + "-" + j;
+      cur = this.gridMap[indexGrid];
+      if (cur.tileType === TileType.MountainExplosion) {
+          drawMountainsExplosionType.bind(this)(cur, true);
+      }
     }
   }
   cb(null);

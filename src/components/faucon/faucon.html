@@ -9,7 +9,40 @@
 
 
 <ion-content padding>
+    <div id="overlay" [style.display]="isOverlay() ? 'block' : 'none'">
+      <div id="text"></div>
+    </div>
     <div id="TileEngine">      
-        <canvas id="viewport"></canvas>
-      </div>
+      <canvas id="viewport"></canvas>
+    </div>
 </ion-content>
+
+
+
+<ion-footer>
+  <ion-toolbar>
+
+    <button ion-button='' color='secondary' [style.display]="isInitialMode() ? '' : 'none'" large='' (click)="hideOverlay()">
+      <ion-icon name='navigate'></ion-icon>
+    </button>
+
+
+    <button ion-button='' color='danger' [style.display]="isInitialMode() ? 'none' : !isPaused() ? '' : 'none'" large='' (click)="pause()">
+      <ion-icon name='square'></ion-icon>
+    </button>
+
+    <button ion-button='' color='secondary' [style.display]="isInitialMode() ? 'none' : isPaused() ? '' : 'none'" large='' (click)="pause()">
+      <ion-icon name='play'></ion-icon>
+    </button>
+
+
+    <button ion-button='' large='' (click)="explosion()" [style.display]="isInitialMode() ? 'none' : ''">
+      <ion-icon name='logo-freebsd-devil'></ion-icon>
+    </button>
+
+    <button ion-button='' large='' (click)="explosion()" [style.display]="isInitialMode() ? 'none' : ''">
+      {{score}} 
+    </button>
+
+  </ion-toolbar>
+</ion-footer>

@@ -1,14 +1,13 @@
-import { Component }      from '@angular/core';
-import { OnInit }         from '@angular/core';
-import { AfterViewInit }  from '@angular/core';
-// import { ionViewCanLeave }  from '@angular/core';
-import { NavController }  from 'ionic-angular';
-import { Events }         from 'ionic-angular';
+import { Component }          from '@angular/core';
+import { OnInit }             from '@angular/core';
+import { AfterViewInit }      from '@angular/core';
+import { NavController }      from 'ionic-angular';
+import { Events }             from 'ionic-angular';
 
-import * as debug         from 'debug';
-import { TileEngine }     from './tileEngine';
-
-
+import * as debug             from 'debug';
+import { TileEngine }         from './tileEngine';
+import { ScreenOrientation }  from '@ionic-native/screen-orientation';
+import { Platform }           from 'ionic-angular';
 
 const log = debug('faucon');
 
@@ -19,15 +18,19 @@ const log = debug('faucon');
 export class Faucon implements OnInit, AfterViewInit { 
 
   tileEngine: TileEngine = null;
+  score: number = 0;
 
-  constructor(public navCtrl: NavController, events: Events) {
+  constructor(public navCtrl: NavController, 
+              events: Events, 
+              private screenOrientation: ScreenOrientation, 
+              public plt: Platform) {
     log('constructor');
     this.subscribeEvents(events);
+    this.score = 0;
   }
 
   subscribeEvents(events: Events) {
     events.subscribe('game-channel', (message) => {
-
       switch(message) {
         case 'pause':
           this.pause();
@@ -40,7 +43,34 @@ export class Faucon implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    if (!this.plt.is('core') && !this.plt.is('mobileweb')) {
+      this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+    }
+  }
 
+  isPaused() {
+    if (this.tileEngine !== null) {
+      return this.tileEngine.isPaused();
+    } else {
+      return false;
+    }
+  }
+
+  
+  isOverlay() {
+    if (this.tileEngine !== null) {
+      return this.tileEngine.isOverlay();
+    } else {
+      return false;
+    }
+  }
+
+  isInitialMode() {
+    if (this.tileEngine !== null) {
+      return this.tileEngine.isInitialMode();
+    } else {
+      return true;
+    }
   }
 
   pause() {
@@ -49,6 +79,10 @@ export class Faucon implements OnInit, AfterViewInit {
 
   explosion() {
     this.tileEngine.explosion();
+  }
+
+  hideOverlay() {
+    this.tileEngine.hideOverlay();
   }
 
   ngAfterViewInit() {
@@ -68,11 +102,10 @@ export class Faucon implements OnInit, AfterViewInit {
     }
 
     //412 / 669 + 78
-
     log('width ==> ' + windowWidth);
     log('height => ' + windowHeight);
 
-    this.tileEngine = new TileEngine(windowWidth, windowHeight);
+    this.tileEngine = new TileEngine(windowWidth, windowHeight, this);
     this.tileEngine.render();
   }
 }

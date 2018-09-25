@@ -1,7 +1,16 @@
 import * as debug					from 'debug';
+import { TileType }       from './tileType';
 const log = debug('game');
 
 export class Tile {
+
+
+  tileType: TileType;
+
+  /*
+   * Indice de l'animation
+   */
+  indexAnimation: number;
 
   /*
    * Image pour le 'context'
@@ -41,7 +50,8 @@ export class Tile {
               width: number, 
               height: number,
               collision: any, 
-              liveMap: any) {
+              liveMap: any,
+              tileType: TileType) {
     this.imagePtr = imagePtr;
     this.xPos = xPos;
     this.yPos = yPos;
@@ -50,6 +60,8 @@ export class Tile {
     this.height = height;
     this.collision = collision;
     this.liveMap = liveMap;
+    this.indexAnimation = -1;
+    this.tileType = tileType;
   }
 
   setYPos(yPos: number) {

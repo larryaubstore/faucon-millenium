@@ -14,24 +14,25 @@ class CheckBlockedRule {
     let indexGrid = horizontalIndex + "-" + verticalIndex;
     let cur: Tile = this.game.liveMap[indexGrid];
     if (cur.collision === 'collision' && this.game.offsetY > 25) {
-
-
       // On transforme la tuile en type explosion 'montagne
       indexGrid = horizontalIndex + "-" + verticalIndex;
       cur = this.game.liveMap[indexGrid];
-
-      if (cur.tileType === TileType.Normal) {
-        cur.collision = 'nocollision';
-        cur.tileType = TileType.MountainExplosion;
-        cur.indexAnimation = this.game.aliasMap['explosion_montagne'].length - 1;
-        if (this.game.isOverlay === false) {
-          this.game.faucon.score++;
-        }
-      } 
+      this.startExplosion(cur);
       return true;
     } else {
       return false;
     }
+  }
+
+  startExplosion(cur: Tile) {
+    if (cur.tileType === TileType.Normal) {
+      cur.collision = 'nocollision';
+      cur.tileType = TileType.MountainExplosion;
+      cur.indexAnimation = this.game.aliasMap['explosion_montagne'].length - 1;
+      if (this.game.isOverlay === false) {
+        this.game.faucon.score++;
+      }
+    } 
   }
 
   checkCollisionCeil() {
@@ -42,7 +43,21 @@ class CheckBlockedRule {
     return this.checkCollisionGen(Math.floor(this.game.horizontalIndex), this.game.centerPosition);
   }
 
+  checkVerticalCollisionGen(horizontalIndex: number, verticalIndex: number) {
+    let indexGrid = horizontalIndex + "-" + verticalIndex; 
+    let cur: Tile = this.game.liveMap[indexGrid];
+    if (cur.collision === 'collision') {
+      this.startExplosion(cur);
+    }
+  }
+
+  checkVerticalCollision() {
+    this.checkVerticalCollisionGen(Math.ceil(this.game.horizontalIndex), this.game.centerPosition + 1);
+    this.checkVerticalCollisionGen(Math.floor(this.game.horizontalIndex), this.game.centerPosition + 1);
+  }
+
   checkCollision() {
+    this.checkVerticalCollision();
     return this.checkCollisionFloor() || this.checkCollisionCeil();
   }
 }

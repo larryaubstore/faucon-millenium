@@ -21,10 +21,10 @@ export default function checkExplosion(cb) {
     // et non l'ordre descendant.
     let index = this.aliasMap['explosion'].length - this.isExplosion;
     this.context.drawImage(this.imageList[index + this.aliasMap['explosion'].begin], 
-                         this.tileWidth * this.horizontalIndex - 45 , 
-                         this.tileHeight * this.verticalIndex +  this.offsetY - (96 / 2), 
-                         this.tileWidth * 2, 
-                         this.tileHeight * 2);
+                         this.tileWidth * this.horizontalIndex - (135), 
+                         this.tileHeight * this.verticalIndex +  this.offsetY - ( (96 * 2) / 2), 
+                         this.tileWidth * 4, 
+                         this.tileHeight * 4);
 
 
     cb('SKIP');
@@ -33,10 +33,10 @@ export default function checkExplosion(cb) {
     log('isExplosion => ' + this.isExplosion);
     let index = this.aliasMap['explosion'].length - this.isExplosion;
     this.context.drawImage(this.imageList[index + this.aliasMap['explosion'].begin], 
-                         this.tileWidth * this.horizontalIndex - 45, 
-                         this.tileHeight * this.verticalIndex +  this.offsetY - (96 / 2), 
-                         this.tileWidth * 2, 
-                         this.tileHeight * 2);
+                         this.tileWidth * this.horizontalIndex - (135), 
+                         this.tileHeight * this.verticalIndex +  this.offsetY - ( (96 * 2) / 2), 
+                         this.tileWidth * 4, 
+                         this.tileHeight * 4);
 
 
     this.isExplosion = this.isExplosion - 1;

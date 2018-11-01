@@ -10,8 +10,8 @@ class CheckEndGame {
     this.game = game;
   }
 
-  isEndGameCeil() {
-    let indexGrid = Math.ceil(this.game.horizontalIndex) + "-" + this.game.centerPosition;
+  isEndGameRound() {
+    let indexGrid = Math.round(this.game.horizontalIndex) + "-" + this.game.centerPosition;
     let cur: Tile = this.game.liveMap[indexGrid];
     if (cur.collision === 'collisionPirate' && this.game.offsetY > 25) {
       this.game.explosion();
@@ -19,22 +19,11 @@ class CheckEndGame {
     } else {
       return false;
     }
-  };
-
-
-  isEndGameFloor() {
-    let indexGrid = Math.floor(this.game.horizontalIndex) + "-" + this.game.centerPosition;
-    let cur: Tile = this.game.liveMap[indexGrid];
-    if (cur.collision === 'collisionPirate' && this.game.offsetY > 25) {
-      this.game.explosion();
-      return true;
-    } else {
-      return false;
-    }
+ 
   }
 
   isEndGame() {
-    return this.isEndGameFloor() || this.isEndGameCeil();
+    return this.isEndGameRound();
   }
 }
 

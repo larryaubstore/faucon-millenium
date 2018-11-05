@@ -279,12 +279,13 @@
                 "assets/imgs/convert/tilePirate.png"
             ],
             "origin": [
-              null,
-              null,
+              "tileOne.blend",
+              "tileOne.blend",
               "tileTwo.blend",
-              null 
+              "tilePirate.blend" 
             ]
         }
+        
     },
     "labels": [
         "nocollision",
@@ -292,6 +293,9 @@
         "nocollision",
         "collisionPirate"
     ],
+    "icon": {
+      "origin": "icon.blend"
+    },
     "tileHeight": 87,
     "tileWidth": 82
 }

@@ -15,7 +15,7 @@ export default function drawMountainsExplosionType(cur: Tile, drawExplosion: boo
     if (drawExplosion === true) {
       this.context.drawImage(this.imageList[index + this.aliasMap['explosion_montagne'].begin], 
                          this.tileWidth * cur.xPos - 45, 
-                         cur.getCalcYPos() - (96 / 2), 
+                         cur.getCalcYPos() - 48, 
                          this.tileWidth * 2, 
                          this.tileHeight * 2);
     }
@@ -33,7 +33,7 @@ export default function drawMountainsExplosionType(cur: Tile, drawExplosion: boo
     if (drawExplosion === true) {
       this.context.drawImage(this.imageList[index + this.aliasMap['explosion_montagne'].begin], 
                          this.tileWidth * cur.xPos - 45, 
-                         cur.getCalcYPos() - (96 / 2), 
+                         cur.getCalcYPos() - 48, 
                          this.tileWidth * 2, 
                          this.tileHeight * 2);
       cur.indexAnimation = cur.indexAnimation - 1;

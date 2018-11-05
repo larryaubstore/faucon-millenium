@@ -22,7 +22,7 @@ export default function checkExplosion(cb) {
     let index = this.aliasMap['explosion'].length - this.isExplosion;
     this.context.drawImage(this.imageList[index + this.aliasMap['explosion'].begin], 
                          this.tileWidth * this.horizontalIndex - (135), 
-                         this.tileHeight * this.verticalIndex +  this.offsetY - ( (96 * 2) / 2), 
+                         this.tileHeight * this.verticalIndex +  this.offsetY - (196 - 48), 
                          this.tileWidth * 4, 
                          this.tileHeight * 4);
 
@@ -34,7 +34,7 @@ export default function checkExplosion(cb) {
     let index = this.aliasMap['explosion'].length - this.isExplosion;
     this.context.drawImage(this.imageList[index + this.aliasMap['explosion'].begin], 
                          this.tileWidth * this.horizontalIndex - (135), 
-                         this.tileHeight * this.verticalIndex +  this.offsetY - ( (96 * 2) / 2), 
+                         this.tileHeight * this.verticalIndex +  this.offsetY - (196 - 48), 
                          this.tileWidth * 4, 
                          this.tileHeight * 4);
 

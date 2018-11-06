@@ -223,22 +223,26 @@ export class Game {
 
 		}
 	
-		left () {
-      log('LEFT');
-      this.horizontalIndex = Math.floor(this.horizontalIndex);
-			this.horizontalIndex = this.horizontalIndex - 1;
-			if (this.horizontalIndex < 0) {
-				this.horizontalIndex = 0;
-			} 
+    left () {
+      if (this.isExplosion === -1) {
+        log('LEFT');
+        this.horizontalIndex = Math.floor(this.horizontalIndex);
+        this.horizontalIndex = this.horizontalIndex - 1;
+        if (this.horizontalIndex < 0) {
+          this.horizontalIndex = 0;
+        }
+      }
 		}
 	
 		right () {
-			log('RIGHT');
-      this.horizontalIndex = Math.floor(this.horizontalIndex);
-			this.horizontalIndex = this.horizontalIndex + 1;
-			if (this.horizontalIndex > 4) {
-				this.horizontalIndex = 4;
-			}
+      if (this.isExplosion === -1) {
+        log('RIGHT');
+        this.horizontalIndex = Math.floor(this.horizontalIndex);
+        this.horizontalIndex = this.horizontalIndex + 1;
+        if (this.horizontalIndex > 4) {
+          this.horizontalIndex = 4;
+        }
+      }
 		}
 
     moveHorizontally(xPos: number) {

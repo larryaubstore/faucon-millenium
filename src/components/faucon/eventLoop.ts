@@ -16,7 +16,7 @@ export class EventLoop {
 
 	constructor(containerWidth: number, containerHeight: number, faucon: Faucon) {
     log('eventLoop');
-		this.game = new Game(0, containerWidth, containerHeight, faucon);
+		this.game = new Game(2, containerWidth, containerHeight, faucon);
 
 	}
 

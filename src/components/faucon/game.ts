@@ -27,7 +27,7 @@ export class Game {
 
     faucon: Faucon = null;
 		fps = 0;
-		horizontalIndex = 0;
+		horizontalIndex = 2;
 		verticalIndex = 0;
 		entities = [];
 		context: any = null;
@@ -245,7 +245,8 @@ export class Game {
       }
 		}
 
-    moveHorizontally(xPos: number) {
+  moveHorizontally(xPos: number) {
+    if (this.isExplosion === -1) {
       log('moveHorizontally');
       if (xPos <= 0) {
         this.horizontalIndex = 0;
@@ -255,4 +256,5 @@ export class Game {
         this.horizontalIndex = xPos as any;
       }
     }
+  }
 }

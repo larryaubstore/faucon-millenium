@@ -16,7 +16,7 @@ export default function moveFauconDemoMode(cb) {
       this.frameCounter++;
       if ( (this.frameCounter % 10) === 0) {
         this.frameCounter = 0;
-        this.moveHorizontally(random);
+        this.moveHorizontally(2);
       }
     }
     cb(null);

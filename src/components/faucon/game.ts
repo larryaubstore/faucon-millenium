@@ -11,6 +11,7 @@ import checkBlocked             from './rules/checkBlocked';
 import checkEndGame             from './rules/checkEndGame';
 import checkExplosion           from './rules/checkExplosion';
 import drawFaucon               from './rules/drawFaucon';
+import drawMountainsExplosionType     from './rules/drawMountainsExplosionType'; 
 
 import loadMapJson              from './rules/loadMapJson';
 import initContext              from './rules/initContext';
@@ -186,6 +187,21 @@ export class Game {
         checkExplosion.bind(this),
 
         drawFaucon.bind(this),
+
+        function(cb) {
+          let indexGrid: string = null;
+          let cur: Tile = null; 
+          for (let i = 0; i < 5; i++) {
+            for (let j = 0; j < this.moduloRange; j++) {
+              indexGrid = i + "-" + j;
+              cur = this.gridMap[indexGrid];
+              if (cur.tileType === TileType.MountainExplosion) {
+                  drawMountainsExplosionType.bind(this)(cur, true);
+              }
+            }
+          }
+          cb(null);
+        }.bind(this),
 
         moveFauconDemoMode.bind(this),
         

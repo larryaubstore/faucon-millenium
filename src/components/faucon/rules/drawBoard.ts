@@ -59,14 +59,14 @@ export default function drawBoard(cb) {
     }
   }
 
-  for (let i = 0; i < 5; i++) {
-    for (let j = 0; j < this.moduloRange; j++) {
-      indexGrid = i + "-" + j;
-      cur = this.gridMap[indexGrid];
-      if (cur.tileType === TileType.MountainExplosion) {
-          drawMountainsExplosionType.bind(this)(cur, true);
-      }
-    }
-  }
+  // for (let i = 0; i < 5; i++) {
+  //   for (let j = 0; j < this.moduloRange; j++) {
+  //     indexGrid = i + "-" + j;
+  //     cur = this.gridMap[indexGrid];
+  //     if (cur.tileType === TileType.MountainExplosion) {
+  //         drawMountainsExplosionType.bind(this)(cur, true);
+  //     }
+  //   }
+  // }
   cb(null);
 }

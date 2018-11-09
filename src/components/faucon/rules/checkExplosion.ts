@@ -27,7 +27,7 @@ export default function checkExplosion(cb) {
                          this.tileHeight * 4);
 
 
-    cb('SKIP');
+    cb(null);
   } else if (this.isExplosion !== -1) {
 
     log('isExplosion => ' + this.isExplosion);
@@ -40,7 +40,7 @@ export default function checkExplosion(cb) {
 
 
     this.isExplosion = this.isExplosion - 1;
-    cb('SKIP');
+    cb(null);
   } else {
     cb(null);
   }

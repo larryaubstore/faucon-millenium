@@ -28,7 +28,10 @@ class CheckEndGame {
 }
 
 export default function checkEndGame(cb) {
-  let checkEndGameInstance = new CheckEndGame(this);
-  checkEndGameInstance.isEndGame();
+
+  if (this.isExplosion === -1) {
+    let checkEndGameInstance = new CheckEndGame(this);
+    checkEndGameInstance.isEndGame();
+  }
   cb(null);
 }

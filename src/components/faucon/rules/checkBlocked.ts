@@ -68,12 +68,16 @@ export default function checkBlocked(cb) {
   if (checkBlockedInstance.checkCollision()) {
      // ne rien faire
   } else {
-    if (this.offsetY == this.tileHeight) {
-      this.offsetY = 0;
-      this.moduloTile = (this.moduloTile + 1 ) % this.moduloRange;
-      this.verticalIndex = this.verticalIndex + 1;
-    } else {
-      this.offsetY = (this.offsetY + 3)
+
+
+    if (this.isExplosion === -1) {
+      if (this.offsetY == this.tileHeight) {
+        this.offsetY = 0;
+        this.moduloTile = (this.moduloTile + 1 ) % this.moduloRange;
+        this.verticalIndex = this.verticalIndex + 1;
+      } else {
+        this.offsetY = (this.offsetY + 3)
+      }
     }
   }
   cb(null);

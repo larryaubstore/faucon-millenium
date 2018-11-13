@@ -15,7 +15,7 @@ const log = debug('rule:explosion');
  *       5
  */
 export default function checkExplosion(cb) {
-  if (this.isExplosion <= 5 && this.isExplosion !== -1 ) {
+  if (this.isExplosion <= 1 && this.isExplosion !== -1 ) {
 
     // On réajuste pour que l'animation s'enchaîne dans l'ordre chronologique
     // et non l'ordre descendant.

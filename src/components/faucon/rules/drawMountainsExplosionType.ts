@@ -2,7 +2,7 @@ import { Tile }                       from '../models/tile';
 
 export default function drawMountainsExplosionType(cur: Tile, drawExplosion: boolean) {
 
-  if (cur.indexAnimation <= 5 && cur.indexAnimation !== -1 ) {
+  if (cur.indexAnimation <= 1 && cur.indexAnimation !== -1 ) {
 
     let index = this.aliasMap['explosion_montagne'].length - cur.indexAnimation;
 

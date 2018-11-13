@@ -1,24 +1,25 @@
-import * as debug			          from 'debug';
-import * as async               from 'async';
-import { Faucon }               from './faucon';
-import { Tile }                 from './models/tile';
-import { TileType }             from './models/tileType';
+import * as debug			              from 'debug';
+import * as async                   from 'async';
+import { Faucon }                   from './faucon';
+import { Tile }                     from './models/tile';
+import { TileType }                 from './models/tileType';
 
 
-import isPaused                 from './rules/isPaused';
-import drawBoard                from './rules/drawBoard';
-import checkBlocked             from './rules/checkBlocked';
-import checkEndGame             from './rules/checkEndGame';
-import checkExplosion           from './rules/checkExplosion';
-import drawFaucon               from './rules/drawFaucon';
-import drawMountainsExplosionType     from './rules/drawMountainsExplosionType'; 
+import isPaused                     from './rules/isPaused';
+import drawBoard                    from './rules/drawBoard';
+import checkBlocked                 from './rules/checkBlocked';
+import checkEndGame                 from './rules/checkEndGame';
+import checkExplosion               from './rules/checkExplosion';
+import drawFaucon                   from './rules/drawFaucon';
+import drawMountainsExplosionType   from './rules/drawMountainsExplosionType'; 
 
-import loadMapJson              from './rules/loadMapJson';
-import initContext              from './rules/initContext';
-import loadImages               from './rules/loadImages';
-import buildGrid                from './rules/buildGrid';
-import moveFauconDemoMode       from './rules/moveFauconDemoMode';
-import oneMoreLine              from './rules/oneMoreLine';
+import loadMapJson                  from './rules/loadMapJson';
+import initContext                  from './rules/initContext';
+import loadImages                   from './rules/loadImages';
+import buildGrid                    from './rules/buildGrid';
+import moveFauconDemoMode           from './rules/moveFauconDemoMode';
+import oneMoreLine                  from './rules/oneMoreLine';
+import drawRideau                   from './rules/drawRideau';
 
 	
 	
@@ -48,6 +49,7 @@ export class Game {
     collisionOffsetY = 0;
     isExplosion = -1;
     isExplosionMountains = -1;
+    isRideauAnimation = -1;
     centerPosition = 2;
 
 
@@ -208,6 +210,8 @@ export class Game {
         checkBlocked.bind(this),
 
         checkEndGame.bind(this),
+
+        drawRideau.bind(this),
         
         oneMoreLine.bind(this)
 

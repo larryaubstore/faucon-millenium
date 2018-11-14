@@ -5,7 +5,7 @@ export default function drawRideau(cb: any) {
   if (this.isExplosion === 1) {
 
     // On démarre l'animation
-    if (this.isRideauAnimation === -1) {
+    if (this.isRideauAnimation === -1 && this.isFadeoutAnimation === -1) {
       this.isRideauAnimation = this.aliasMap['rideau'].length;
     }
 

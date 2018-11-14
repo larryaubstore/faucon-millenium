@@ -50,6 +50,7 @@ export class Game {
     isExplosion = -1;
     isExplosionMountains = -1;
     isRideauAnimation = -1;
+    isFadeoutAnimation = -1;
     centerPosition = 2;
 
 

@@ -3,6 +3,9 @@ import { TileType }                   from '../models/tileType';
 
 import drawNormalType                 from './drawNormalType'; 
 import drawMountainsExplosionType     from './drawMountainsExplosionType'; 
+import drawFadeout                    from './drawFadeout'; 
+
+
 
 export default function drawBoard(cb) {
 
@@ -39,24 +42,14 @@ export default function drawBoard(cb) {
         case TileType.FauconExplosion:
           break;
       }
-
-      ////this.context.drawImage(tilePtr, 
-      ////                       cur.xPos * this.tileWidth, 
-      ////                       cur.getCalcYPos(), 
-      ////                       this.tileWidth, 
-      ////                       this.tileHeight);
-
-      
-      // if (cur.initialYPos <= this.aliasMap['number'].length + 2) {    
-      //   this.context.drawImage(this.imageList[this.aliasMap['number'].length + cur.initialYPos], 
-      //                          0, 
-      //                          this.tileHeight * (j-1)  +  this.offsetY, 
-      //                          this.tileWidth, 
-      //                          this.tileHeight);
-      // }
-
-
+      drawFadeout.bind(this)(cur);
     }
+  }
+
+  if (this.isFadeoutAnimation !== -1 && this.isFadeoutAnimation !== 1) {
+    this.isFadeoutAnimation--;
+  } else if (this.isRideauAnimation === 1 && this.isFadeoutAnimation === -1) {
+    this.isFadeoutAnimation = this.aliasMap['fadeout'].length;
   }
 
   // for (let i = 0; i < 5; i++) {

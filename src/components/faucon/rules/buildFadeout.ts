@@ -1,5 +1,6 @@
 import { Tile }                       from '../models/tile';
 import drawFadeout                    from './drawFadeout';
+import buildGrid                      from './buildGrid';
 
 export default function buildFadeout(cb) {
 
@@ -18,8 +19,23 @@ export default function buildFadeout(cb) {
 
   if (this.isFadeoutAnimation !== -1 && this.isFadeoutAnimation !== 1) {
     this.isFadeoutAnimation--;
+    cb(null);
   } else if (this.isRideauAnimation === 1 && this.isFadeoutAnimation === -1) {
     this.isFadeoutAnimation = this.aliasMap['fadeout'].length;
+    cb(null);
+  } else if (this.isRideauAnimation === 1 && this.isFadeoutAnimation === 1) {
+    buildGrid.bind(this)( (err: any) => {
+      if (err) {
+        cb(err);
+      } else {
+        this.isRideauAnimation = -1;
+        this.isFadeoutAnimation = -1;
+        this.isExplosion = -1;
+        this.isOverlay = true;
+        cb(null);
+      }
+    });
+  } else {
+    cb(null);
   }
-  cb(null);
 }

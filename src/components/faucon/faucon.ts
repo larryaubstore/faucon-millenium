@@ -89,7 +89,7 @@ export class Faucon implements OnInit, AfterViewInit {
     log('ngAfterViewInit');
 
     let windowWidth: number = window.innerWidth;        // 1080
-    let windowHeight: number = window.innerHeight - 78; // 1920
+    let windowHeight: number = window.innerHeight;      // 1920
 
     var canvas: any = document.getElementById('viewport');
 
@@ -101,7 +101,6 @@ export class Faucon implements OnInit, AfterViewInit {
       canvas.height = windowHeight;
     }
 
-    //412 / 669 + 78
     log('width ==> ' + windowWidth);
     log('height => ' + windowHeight);
 

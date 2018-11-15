@@ -68,6 +68,7 @@ export class EventLoop {
 
   touchStart(evt: any) {
     log('touchStart');
+    this.game.hideOverlay();
     log(evt.changedTouches[0].pageX);
     this.originalHorizontalIndex = this.game.horizontalIndex;
     this.touchStartPos = evt.changedTouches[0].pageX;
@@ -89,7 +90,7 @@ export class EventLoop {
 
 	checkKey(e: any) {
 		e = e || window.event;
-
+    this.game.hideOverlay();
 		console.log('verticalIndex 		==> ' + this.game.verticalIndex);
 		console.log('horizontalIndex 	==> ' + this.game.horizontalIndex);
 

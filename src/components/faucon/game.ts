@@ -20,7 +20,7 @@ import buildGrid                    from './rules/buildGrid';
 import moveFauconDemoMode           from './rules/moveFauconDemoMode';
 import oneMoreLine                  from './rules/oneMoreLine';
 import drawRideau                   from './rules/drawRideau';
-
+import buildFadeout                 from './rules/buildFadeout';
 	
 	
 const log = debug('game');
@@ -211,11 +211,12 @@ export class Game {
         checkBlocked.bind(this),
 
         checkEndGame.bind(this),
-
-        drawRideau.bind(this),
         
-        oneMoreLine.bind(this)
+        oneMoreLine.bind(this),
+        
+        drawRideau.bind(this),
 
+        buildFadeout.bind(this)
 
        ], (err: any) => {
           if (err === 'SKIP') {

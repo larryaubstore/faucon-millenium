@@ -42,24 +42,8 @@ export default function drawBoard(cb) {
         case TileType.FauconExplosion:
           break;
       }
-      drawFadeout.bind(this)(cur);
     }
   }
 
-  if (this.isFadeoutAnimation !== -1 && this.isFadeoutAnimation !== 1) {
-    this.isFadeoutAnimation--;
-  } else if (this.isRideauAnimation === 1 && this.isFadeoutAnimation === -1) {
-    this.isFadeoutAnimation = this.aliasMap['fadeout'].length;
-  }
-
-  // for (let i = 0; i < 5; i++) {
-  //   for (let j = 0; j < this.moduloRange; j++) {
-  //     indexGrid = i + "-" + j;
-  //     cur = this.gridMap[indexGrid];
-  //     if (cur.tileType === TileType.MountainExplosion) {
-  //         drawMountainsExplosionType.bind(this)(cur, true);
-  //     }
-  //   }
-  // }
   cb(null);
 }

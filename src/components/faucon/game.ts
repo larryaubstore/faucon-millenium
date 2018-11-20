@@ -47,12 +47,22 @@ export class Game {
     currentModuloTile = 0;
     collisionOffsetX = 0;
     collisionOffsetY = 0;
+
+    /*
+     * Propriété pour l'animation de l'explosion du faucon 
+     */
     isExplosion = -1;
-    isExplosionMountains = -1;
+
+    /*
+     * Propriété pour l'animation du rideau 
+     */
     isRideauAnimation = -1;
+
+    /*
+     * Propriété pour l'animation du dégradé vers le noir
+     */
     isFadeoutAnimation = -1;
     centerPosition = 2;
-
 
     collisionList: any = [];
     srcList: any = [];
@@ -98,6 +108,11 @@ export class Game {
     jsonData: any = null;
 
     frameCounter = 0;
+
+    speed = 3;
+
+    verticalMovesWithoutHit = 0;
+
 
 		constructor(horizontalIndex: number, 
                 containerWidth: number, 

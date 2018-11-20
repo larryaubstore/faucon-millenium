@@ -26,6 +26,8 @@ class CheckBlockedRule {
 
   startExplosion(cur: Tile) {
     if (cur.tileType === TileType.Normal) {
+
+      this.game.verticalMovesWithoutHit = 0;
       cur.collision = 'nocollision';
       cur.tileType = TileType.MountainExplosion;
       cur.indexAnimation = this.game.aliasMap['explosion_montagne'].length - 1;
@@ -51,6 +53,16 @@ class CheckBlockedRule {
     }
   }
 
+  checkSpeed() {
+    if (this.game.verticalMovesWithoutHit <= 3) {
+      this.game.speed = 3;
+    } else if (this.game.verticalMovesWithoutHit <= 5) {
+      this.game.speed = 3;
+    } else {
+      this.game.speed = 6;
+    }
+  }
+
   checkVerticalCollision() {
     this.checkVerticalCollisionGen(Math.ceil(this.game.horizontalIndex), this.game.centerPosition + 1);
     this.checkVerticalCollisionGen(Math.floor(this.game.horizontalIndex), this.game.centerPosition + 1);
@@ -72,11 +84,18 @@ export default function checkBlocked(cb) {
 
     if (this.isExplosion === -1) {
       if (this.offsetY == this.tileHeight) {
+        this.verticalMovesWithoutHit++;
+        checkBlockedInstance.checkSpeed();
         this.offsetY = 0;
         this.moduloTile = (this.moduloTile + 1 ) % this.moduloRange;
         this.verticalIndex = this.verticalIndex + 1;
       } else {
-        this.offsetY = (this.offsetY + 3)
+
+        if ( (this.offsetY + this.speed) > this.tileHeight) {
+          this.offsetY = this.tileHeight;
+        } else {
+          this.offsetY = (this.offsetY + this.speed);
+        }
       }
     }
   }

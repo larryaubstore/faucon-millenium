@@ -18,6 +18,8 @@ export default function oneMoreLine(cb) {
         indexRandom = Math.floor(Math.random() * this.aliasMap['tile'].length + this.aliasMap['tile'].begin);
         collisionType = this.collisionList[indexRandom - this.aliasMap['tile'].begin];
 
+
+
         if (this.isInitialMode() && collisionType === 'collisionPirate') {
           indexRandom = Math.floor(0 * this.aliasMap['tile'].length + this.aliasMap['tile'].begin);
         } else if (piratePerLine === 1 && collisionType === 'collisionPirate') {
@@ -37,10 +39,19 @@ export default function oneMoreLine(cb) {
         cur = this.realPositionMap[realIndexGrid];
         cur.tileType = TileType.Normal;
 
+        if ( (this.score % 2) === 0) {
+          cur.imagePtr = this.imageList[this.aliasMap['tile'].begin];
+          cur.collision = this.collisionList[0];
+          cur.indexAnimation = -1;
+        } else {
+          cur.imagePtr = this.imageList[indexRandom];
+          cur.collision = this.collisionList[indexRandom - this.aliasMap['tile'].begin];
+          cur.indexAnimation = -1;
+        }
+      }
 
-        cur.imagePtr = this.imageList[indexRandom];
-        cur.collision = this.collisionList[indexRandom - this.aliasMap['tile'].begin];
-        cur.indexAnimation = -1;
+      if (this.isOverlay === false) {
+        this.score++;
       }
     }
   }

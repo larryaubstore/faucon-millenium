@@ -113,6 +113,8 @@ export class Game {
 
     verticalMovesWithoutHit = 0;
 
+    score = -1;
+
 
 		constructor(horizontalIndex: number, 
                 containerWidth: number, 
@@ -127,6 +129,7 @@ export class Game {
       this.moduloTile = 0;
       this.currentModuloTile = 0;
       this.faucon = faucon;
+      this.score = -1;
 		}
 
     pause() {
@@ -163,6 +166,13 @@ export class Game {
       log('waitImageLoading');
     }
 
+    restart() {
+        this.isRideauAnimation = -1;
+        this.isFadeoutAnimation = -1;
+        this.isExplosion = -1;
+        this.isOverlay = true;
+        this.score = -1;
+    }
 
 
     async initialize() {

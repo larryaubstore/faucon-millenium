@@ -31,9 +31,6 @@ class CheckBlockedRule {
       cur.collision = 'nocollision';
       cur.tileType = TileType.MountainExplosion;
       cur.indexAnimation = this.game.aliasMap['explosion_montagne'].length - 1;
-      if (this.game.isOverlay === false) {
-        this.game.faucon.score++;
-      }
     } 
   }
 

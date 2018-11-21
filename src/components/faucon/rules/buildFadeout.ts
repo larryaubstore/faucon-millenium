@@ -28,10 +28,7 @@ export default function buildFadeout(cb) {
       if (err) {
         cb(err);
       } else {
-        this.isRideauAnimation = -1;
-        this.isFadeoutAnimation = -1;
-        this.isExplosion = -1;
-        this.isOverlay = true;
+        this.restart();
         cb(null);
       }
     });

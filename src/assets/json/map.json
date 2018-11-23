@@ -402,7 +402,16 @@
         },
         "numbers": {
             "files": [
-                "assets/imgs/numbers/one.png"
+                "assets/imgs/numbers/zero.png",
+                "assets/imgs/numbers/one.png",
+                "assets/imgs/numbers/two.png",
+                "assets/imgs/numbers/three.png",
+                "assets/imgs/numbers/four.png",
+                "assets/imgs/numbers/five.png",
+                "assets/imgs/numbers/six.png",
+                "assets/imgs/numbers/seven.png",
+                "assets/imgs/numbers/eight.png",
+                "assets/imgs/numbers/nine.png"
             ],
             "origin": ""
         },

@@ -1,5 +1,7 @@
 import { Game } 	    from './game';
 import { Faucon } 	  from './faucon';
+import { Storage }    from '@ionic/storage';
+
 import * as debug  	  from 'debug';
 import * as rafLoop   from 'raf-loop';
 
@@ -14,9 +16,9 @@ export class EventLoop {
 
 
 
-	constructor(containerWidth: number, containerHeight: number, faucon: Faucon) {
+	constructor(containerWidth: number, containerHeight: number, faucon: Faucon, storage: Storage) {
     log('eventLoop');
-		this.game = new Game(2, containerWidth, containerHeight, faucon);
+		this.game = new Game(2, containerWidth, containerHeight, faucon, storage);
 
 	}
 

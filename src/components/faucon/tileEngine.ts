@@ -1,5 +1,6 @@
-import { EventLoop } from './eventLoop';
-import { Faucon } from './faucon';
+import { EventLoop }  from './eventLoop';
+import { Faucon }     from './faucon';
+import { Storage }    from '@ionic/storage';
 
 
 export class TileEngine {
@@ -7,8 +8,11 @@ export class TileEngine {
 
     eventLoop: EventLoop = null;
 
-    constructor(containerWidth: number, containerHeight: number, faucon: Faucon) {
-        this.eventLoop = new EventLoop(containerWidth, containerHeight, faucon);
+    constructor(containerWidth: number, 
+                containerHeight: number, 
+                faucon: Faucon,
+                storage: Storage) {
+        this.eventLoop = new EventLoop(containerWidth, containerHeight, faucon, storage);
         this.eventLoop.initialize();
     }
 

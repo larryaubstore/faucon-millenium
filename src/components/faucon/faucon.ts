@@ -8,6 +8,7 @@ import * as debug             from 'debug';
 import { TileEngine }         from './tileEngine';
 import { ScreenOrientation }  from '@ionic-native/screen-orientation';
 import { Platform }           from 'ionic-angular';
+import { Storage }            from '@ionic/storage';
 
 const log = debug('faucon');
 
@@ -23,7 +24,8 @@ export class Faucon implements OnInit, AfterViewInit {
   constructor(public navCtrl: NavController, 
               events: Events, 
               private screenOrientation: ScreenOrientation, 
-              public plt: Platform) {
+              public plt: Platform,
+              private storage: Storage) {
     log('constructor');
     this.subscribeEvents(events);
     this.score = 0;
@@ -104,7 +106,7 @@ export class Faucon implements OnInit, AfterViewInit {
     log('width ==> ' + windowWidth);
     log('height => ' + windowHeight);
 
-    this.tileEngine = new TileEngine(windowWidth, windowHeight, this);
+    this.tileEngine = new TileEngine(windowWidth, windowHeight, this, this.storage);
     this.tileEngine.render();
   }
 }

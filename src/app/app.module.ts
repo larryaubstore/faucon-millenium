@@ -13,6 +13,7 @@ import { Faucon }                                     from '../components/faucon
 import { StatusBar }                                  from '@ionic-native/status-bar';
 import { SplashScreen }                               from '@ionic-native/splash-screen';
 import { ScreenOrientation }                          from '@ionic-native/screen-orientation';
+import { IonicStorageModule }                         from '@ionic/storage';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ScreenOrientation }                          from '@ionic-native/screen
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [

@@ -3,6 +3,7 @@ import * as async                   from 'async';
 import { Faucon }                   from './faucon';
 import { Tile }                     from './models/tile';
 import { TileType }                 from './models/tileType';
+import { Storage }                  from '@ionic/storage';
 
 
 import isPaused                     from './rules/isPaused';
@@ -115,11 +116,14 @@ export class Game {
 
     score = -1;
 
+    storage: Storage = null;
+
 
 		constructor(horizontalIndex: number, 
                 containerWidth: number, 
                 containerHeight: number,
-                faucon: Faucon) {
+                faucon: Faucon, 
+                storage: Storage) {
 			this.horizontalIndex = horizontalIndex;
 
 			this.gameWidth = containerWidth;
@@ -130,6 +134,7 @@ export class Game {
       this.currentModuloTile = 0;
       this.faucon = faucon;
       this.score = -1;
+      this.storage = storage;
 		}
 
     pause() {
@@ -138,6 +143,10 @@ export class Game {
     }
 
     hideOverlay() {
+
+      if (this.isOverlay === true) {
+        this.score = -1;
+      }
       this.isOverlay = false;
     }
 
@@ -153,6 +162,17 @@ export class Game {
      *
      */
     explosion() {
+
+      this.storage.get('score').then( (val) => {
+
+        if (val === null) {
+          this.storage.set('score', this.score);
+        } else {
+          if (this.score > val) {
+            this.storage.set('score', this.score);
+          }
+        }
+      });
 
       if (this.isExplosion === -1) {
         this.verticalIndex = this.centerPosition;

@@ -59,7 +59,7 @@ export default function oneMoreLine(cb) {
       cur.tileType = TileType.Normal;
 
 
-      if (  ((this.score % 10) === 0 && this.isOverlay === false) || (this.isOverlay === true && this.moduloTile === 0)   )     {
+      if (  ((this.score % 10) === 0 && this.isOverlay === false && this.score !== 0) || (this.isOverlay === true && this.moduloTile === 0 && this.score !== -1)   )     {
 
         let numberPerRow = -1;
         switch(i) {
@@ -111,11 +111,7 @@ export default function oneMoreLine(cb) {
       if ( this.score === -1 ) {
         this.storage.get('score').then((val) => {
           if (val !== null) {
-            if ( (val % 10) !== 0)  {
-              this.score = val + (10  - (val % 10));
-            } else {
-              this.score = val;
-            }
+            this.score = val;
           }
         });
       }     

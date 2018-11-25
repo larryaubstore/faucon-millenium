@@ -93,6 +93,11 @@ export class Faucon implements OnInit, AfterViewInit {
     let windowWidth: number = window.innerWidth;        // 1080
     let windowHeight: number = window.innerHeight;      // 1920
 
+    if (windowWidth > windowHeight) {
+      windowWidth = window.innerHeight;
+      windowHeight = window.innerWidth;
+    }
+
     var canvas: any = document.getElementById('viewport');
 
     if (windowWidth >= 540) {

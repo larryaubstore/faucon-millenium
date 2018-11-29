@@ -63,7 +63,7 @@ export class Game {
      * Propriété pour l'animation du dégradé vers le noir
      */
     isFadeoutAnimation = -1;
-    centerPosition = 2;
+    centerPosition = 5;
 
     collisionList: any = [];
     srcList: any = [];

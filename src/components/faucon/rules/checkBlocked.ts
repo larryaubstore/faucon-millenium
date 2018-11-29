@@ -50,14 +50,20 @@ class CheckBlockedRule {
     }
   }
 
-  checkSpeed() {
-    if (this.game.verticalMovesWithoutHit <= 3) {
-      this.game.speed = 3;
-    } else if (this.game.verticalMovesWithoutHit <= 5) {
-      this.game.speed = 3;
+  getSpeed() {
+    if (this.game.score < 25) {
+      return 3;
+    } else if (this.game.score < 50) {
+      return 4;
+    } else if (this.game.score < 75) {
+      return 6;
     } else {
-      this.game.speed = 6;
+      return 8;
     }
+  }
+
+  checkSpeed() {
+    this.game.speed = this.getSpeed();
   }
 
   checkVerticalCollision() {

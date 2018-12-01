@@ -1,4 +1,4 @@
-import * as debug			              from 'debug';
+import * as debug                   from 'debug';
 import * as async                   from 'async';
 import { Faucon }                   from './faucon';
 import { Tile }                     from './models/tile';
@@ -22,26 +22,25 @@ import moveFauconDemoMode           from './rules/moveFauconDemoMode';
 import oneMoreLine                  from './rules/oneMoreLine';
 import drawRideau                   from './rules/drawRideau';
 import buildFadeout                 from './rules/buildFadeout';
-	
-	
+
 const log = debug('game');
   
 export class Game {
 
     faucon: Faucon = null;
-		fps = 0;
-		horizontalIndex = 2;
-		verticalIndex = 0;
-		entities = [];
-		context: any = null;
+    fps = 0;
+    horizontalIndex = 2;
+    verticalIndex = 0;
+    entities = [];
+    context: any = null;
 
-		tileWidth = 0;
-		tileHeight = 0;
-
-		gameWidth = 0;
-		gameHeight = 0;
-
-		offsetY = 0;
+    tileWidth = 0;
+    tileHeight = 0;
+    
+    gameWidth = 0;
+    gameHeight = 0;
+    
+    offsetY = 0;
 
     moduloTile = 0;
     moduloRange = 0;
@@ -67,7 +66,7 @@ export class Game {
 
     collisionList: any = [];
     srcList: any = [];
-	  imageList: any = [];
+    imageList: any = [];
     explosionMap: any = [];
 
     /*
@@ -119,17 +118,17 @@ export class Game {
     storage: Storage = null;
 
 
-		constructor(horizontalIndex: number, 
+    constructor(horizontalIndex: number, 
                 containerWidth: number, 
                 containerHeight: number,
                 faucon: Faucon, 
                 storage: Storage) {
-			this.horizontalIndex = horizontalIndex;
-
-			this.gameWidth = containerWidth;
-			this.gameHeight = containerHeight;
-
-			this.offsetY = 0;
+      this.horizontalIndex = horizontalIndex;
+      
+      this.gameWidth = containerWidth;
+      this.gameHeight = containerHeight;
+      
+      this.offsetY = 0;
       this.moduloTile = 0;
       this.currentModuloTile = 0;
       this.faucon = faucon;
@@ -139,16 +138,16 @@ export class Game {
       if (window.innerHeight <= 500) {
         this.centerPosition = 4;
       } 
-		}
+    }
 
 
-		drawImage(img: any, 
-							xPos: number,
-							yPos: number,
-							width: number,
-							height: number) {
-    	this.context.drawImage(img, xPos, yPos, width, height);
-		}
+    drawImage(img: any, 
+              xPos: number,
+              yPos: number,
+              width: number,
+              height: number) {
+      this.context.drawImage(img, xPos, yPos, width, height);
+    }
 
     pause() {
       this.isPaused = !this.isPaused;
@@ -163,9 +162,9 @@ export class Game {
       this.isOverlay = false;
     }
 
-		isInitialMode() {
-    	return !this.isPaused && this.isOverlay;
-   	}
+    isInitialMode() {
+      return !this.isPaused && this.isOverlay;
+    }
 
     /*
      * Méthode qui provoque une explosion et/ou 
@@ -233,7 +232,7 @@ export class Game {
         });
     }
 
-		draw() {
+    draw() {
 
       /*
        * Chaîne de montage pour le rendu
@@ -284,26 +283,25 @@ export class Game {
             console.log(err);
           }
         });
-		}
+    }
 
-	  up() {
-			log('UP');
-			this.verticalIndex = this.verticalIndex - 1;
-			if (this.verticalIndex < 0) {
-				this.verticalIndex = 0;
-			}
+    up() {
+      log('UP');
+      this.verticalIndex = this.verticalIndex - 1;
+      if (this.verticalIndex < 0) {
+        this.verticalIndex = 0;
+      }
 
-		}
-	
-		down () {
-			log('DOWN');
-			this.verticalIndex = this.verticalIndex + 1;
-			if (this.verticalIndex > 9) {
-				this.verticalIndex = 9;
-			}
+    }
 
-		}
-	
+    down () {
+      log('DOWN');
+      this.verticalIndex = this.verticalIndex + 1;
+      if (this.verticalIndex > 9) {
+        this.verticalIndex = 9;
+      }
+    }
+
     left () {
       if (this.isExplosion === -1) {
         log('LEFT');
@@ -313,9 +311,9 @@ export class Game {
           this.horizontalIndex = 0;
         }
       }
-		}
-	
-		right () {
+    }
+
+    right () {
       if (this.isExplosion === -1) {
         log('RIGHT');
         this.horizontalIndex = Math.floor(this.horizontalIndex);
@@ -324,18 +322,18 @@ export class Game {
           this.horizontalIndex = 4;
         }
       }
-		}
+    }
 
-  moveHorizontally(xPos: number) {
-    if (this.isExplosion === -1) {
-      log('moveHorizontally');
-      if (xPos <= 0) {
-        this.horizontalIndex = 0;
-      } else if (xPos >= 4) {
-        this.horizontalIndex = 4;
-      } else {
-        this.horizontalIndex = xPos as any;
+    moveHorizontally(xPos: number) {
+      if (this.isExplosion === -1) {
+        log('moveHorizontally');
+        if (xPos <= 0) {
+          this.horizontalIndex = 0;
+        } else if (xPos >= 4) {
+          this.horizontalIndex = 4;
+        } else {
+          this.horizontalIndex = xPos as any;
+        }
       }
     }
-  }
 }

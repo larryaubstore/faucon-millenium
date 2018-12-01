@@ -24,3 +24,5 @@ let g:syntastic_check_on_wq = 0
 
 
 let g:syntastic_typescript_checkers = ['jshint']
+set list
+set listchars=tab:>-

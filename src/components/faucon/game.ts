@@ -135,6 +135,10 @@ export class Game {
       this.faucon = faucon;
       this.score = -1;
       this.storage = storage;
+      
+      if (window.innerHeight <= 500) {
+        this.centerPosition = 4;
+      } 
 		}
 
 
@@ -186,11 +190,6 @@ export class Game {
       if (this.isExplosion === -1) {
 
         this.verticalIndex = this.centerPosition;
-        /// if (window.innerHeight <= 500) {
-        ///   this.verticalIndex = this.centerPosition - 1;
-        /// } else {
-        ///   this.verticalIndex = this.centerPosition;
-        /// }
         this.isExplosion =  this.aliasMap['explosion'].length;
       } else {
         this.isExplosion = -1; 

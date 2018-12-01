@@ -93,9 +93,6 @@ export class EventLoop {
 	checkKey(e: any) {
 		e = e || window.event;
     this.game.hideOverlay();
-		console.log('verticalIndex 		==> ' + this.game.verticalIndex);
-		console.log('horizontalIndex 	==> ' + this.game.horizontalIndex);
-
 		if (e.keyCode == '38') {
 			this.game.up();
 		}

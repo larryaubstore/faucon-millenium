@@ -137,6 +137,15 @@ export class Game {
       this.storage = storage;
 		}
 
+
+		drawImage(img: any, 
+							xPos: number,
+							yPos: number,
+							width: number,
+							height: number) {
+    	this.context.drawImage(img, xPos, yPos, width, height);
+		}
+
     pause() {
       this.isPaused = !this.isPaused;
       this.isOverlay = this.isPaused;
@@ -175,7 +184,13 @@ export class Game {
       });
 
       if (this.isExplosion === -1) {
+
         this.verticalIndex = this.centerPosition;
+        /// if (window.innerHeight <= 500) {
+        ///   this.verticalIndex = this.centerPosition - 1;
+        /// } else {
+        ///   this.verticalIndex = this.centerPosition;
+        /// }
         this.isExplosion =  this.aliasMap['explosion'].length;
       } else {
         this.isExplosion = -1; 

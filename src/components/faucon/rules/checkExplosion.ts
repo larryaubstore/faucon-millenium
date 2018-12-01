@@ -21,7 +21,7 @@ export default function checkExplosion(cb) {
       // On réajuste pour que l'animation s'enchaîne dans l'ordre chronologique
       // et non l'ordre descendant.
       let index = this.aliasMap['explosion'].length - this.isExplosion;
-      this.context.drawImage(this.imageList[index + this.aliasMap['explosion'].begin], 
+      this.drawImage(this.imageList[index + this.aliasMap['explosion'].begin], 
                            this.tileWidth * this.horizontalIndex - (135), 
                            this.tileHeight * this.verticalIndex +  this.offsetY - (196 - 48), 
                            this.tileWidth * 4, 
@@ -35,7 +35,7 @@ export default function checkExplosion(cb) {
 
       log('isExplosion => ' + this.isExplosion);
       let index = this.aliasMap['explosion'].length - this.isExplosion;
-      this.context.drawImage(this.imageList[index + this.aliasMap['explosion'].begin], 
+      this.drawImage(this.imageList[index + this.aliasMap['explosion'].begin], 
                            this.tileWidth * this.horizontalIndex - (135), 
                            this.tileHeight * this.verticalIndex +  this.offsetY - (196 - 48), 
                            this.tileWidth * 4, 

@@ -12,7 +12,7 @@ export default function drawRideau(cb: any) {
     if (this.isRideauAnimation <= 1 && this.isRideauAnimation !== -1 ) {
       let index = this.aliasMap['rideau'].length - this.isRideauAnimation;
       if (this.isRideauAnimation !== -1) {
-        this.context.drawImage(this.imageList[index + this.aliasMap['rideau'].begin], 
+        this.drawImage(this.imageList[index + this.aliasMap['rideau'].begin], 
                            this.tileWidth * this.horizontalIndex, 
                            this.tileHeight * this.verticalIndex, 
                            this.tileWidth, 
@@ -21,7 +21,7 @@ export default function drawRideau(cb: any) {
     } else if (this.isRideauAnimation !== -1) {
       let index = this.aliasMap['rideau'].length - this.isRideauAnimation;
       if (this.isRideauAnimation !== -1) {
-        this.context.drawImage(this.imageList[index + this.aliasMap['rideau'].begin], 
+        this.drawImage(this.imageList[index + this.aliasMap['rideau'].begin], 
                            this.tileWidth * this.horizontalIndex, 
                            this.tileHeight * this.verticalIndex , 
                            this.tileWidth, 
